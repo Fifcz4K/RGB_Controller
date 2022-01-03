@@ -1,17 +1,16 @@
 #include "device_control.h"
 
-static void blink(void)
+static void rgbController(void)
 {
-    uint16_t counter = 0;
-    while(1)
-    {
-        vTaskDelay(1000 / portTICK_RATE_MS);
-        gpio_set_level(GPIO_R1, counter % 2);   
-        gpio_set_level(GPIO_G1, counter++ % 4);   
-    }
+    // while(1)
+    // {
+    //     vTaskDelay(100 / portTICK_RATE_MS);
+    //     outputs_setPWM(0, getDeviceConfig()->rgbOne.red);
+    //     outputs_setPWM(1, getDeviceConfig()->rgbOne.green);
+    // }
 }
 
 void deviceControlInit(void)
 {
-    xTaskCreate(blink, "blink", 4096, NULL, 3, NULL);
+    // xTaskCreate(rgbController, "rgbController", 4096, NULL, 3, NULL);
 }

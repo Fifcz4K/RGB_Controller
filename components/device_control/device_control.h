@@ -4,6 +4,7 @@
 #include "models.h"
 #include "common.h"
 #include "outputs.h"
+#include "device_config.h"
 
 void deviceControlInit(void);
 
