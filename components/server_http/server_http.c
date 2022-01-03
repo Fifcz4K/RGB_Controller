@@ -38,7 +38,7 @@ static esp_err_t setDevice_post_handler(httpd_req_t *req)
 }
 
 static const httpd_uri_t setDevice = {
-    .uri       = "/setDevice",
+    .uri       = "/SetDevice",
     .method    = HTTP_POST,
     .handler   = setDevice_post_handler,
     .user_ctx  = NULL

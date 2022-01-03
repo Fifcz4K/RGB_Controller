@@ -6,27 +6,18 @@
 #include "models.h"
 #include "server_http.h"
 #include "outputs.h"
+#include "device_control.h"
 
 static const char *TAG = "MAIN.C";
 
 static void systemInit(void);
-
-static void blink(void)
-{
-    uint16_t counter = 0;
-    while(1)
-    {
-        vTaskDelay(1000 / portTICK_RATE_MS);
-        gpio_set_level(GPIO_R1, counter++ % 2);   
-    }
-}
 
 void app_main(void)
 {
     systemInit();
     startServerHttp();
     outputs_init();
-    xTaskCreate(blink, "blink", 4096, NULL, 3, NULL);
+    deviceControlInit();
 }
 
 static void systemInit(void)
