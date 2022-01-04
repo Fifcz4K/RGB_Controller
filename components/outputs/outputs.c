@@ -20,6 +20,38 @@ ledc_channel_config_t ledc_channel[LEDC_TEST_CH_NUM] =
         .hpoint     = 0,
         .timer_sel  = LEDC_LS_TIMER
     },
+    {
+        .channel    = LEDC_LS_CH2_CHANNEL,
+        .duty       = 0,
+        .gpio_num   = LEDC_LS_CH2_GPIO,
+        .speed_mode = LEDC_LS_MODE,
+        .hpoint     = 0,
+        .timer_sel  = LEDC_LS_TIMER
+    },
+    {
+        .channel    = LEDC_LS_CH3_CHANNEL,
+        .duty       = 0,
+        .gpio_num   = LEDC_LS_CH3_GPIO,
+        .speed_mode = LEDC_LS_MODE,
+        .hpoint     = 0,
+        .timer_sel  = LEDC_LS_TIMER
+    },
+    {
+        .channel    = LEDC_LS_CH4_CHANNEL,
+        .duty       = 0,
+        .gpio_num   = LEDC_LS_CH4_GPIO,
+        .speed_mode = LEDC_LS_MODE,
+        .hpoint     = 0,
+        .timer_sel  = LEDC_LS_TIMER
+    },
+    {
+        .channel    = LEDC_LS_CH5_CHANNEL,
+        .duty       = 0,
+        .gpio_num   = LEDC_LS_CH5_GPIO,
+        .speed_mode = LEDC_LS_MODE,
+        .hpoint     = 0,
+        .timer_sel  = LEDC_LS_TIMER
+    },
 };
 
 void outputs_init(void)
@@ -44,6 +76,6 @@ void outputs_init(void)
 
 void outputs_setPWM(uint8_t channel, uint8_t colorValue)
 {
-    ledc_set_duty(ledc_channel[channel].speed_mode, ledc_channel[channel].channel, colorValue * 32);
+    ledc_set_duty(ledc_channel[channel].speed_mode, ledc_channel[channel].channel, colorValue * PWM_DUTY_STEP);
     ledc_update_duty(ledc_channel[channel].speed_mode, ledc_channel[channel].channel);
 }

@@ -3,8 +3,8 @@
 
 #include "driver/gpio.h"
 
-#define GPIO_PHOTORESISTOR  0
-#define GPIO_NTC  0
+#define GPIO_PHOTORESISTOR  33
+#define GPIO_NTC  32
 
 void inputs_init(void);
 
