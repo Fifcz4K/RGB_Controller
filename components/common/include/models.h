@@ -3,17 +3,30 @@
 
 #include "stdint.h"
 
+#define FALSE 0
+#define TRUE 1
+
+#define SECTION_NUMBER 2
+#define COLOR_NUMBER 3
+
+typedef uint8_t color_value_t;
+
 typedef struct
 {
     uint16_t adcTemperature;
     uint16_t adcLight;
 }measurements_t;
 
+typedef enum
+{
+    Red,
+    Green,
+    Blue
+}color_t;
+
 typedef struct
 {
-    uint8_t red;
-    uint8_t green;
-    uint8_t blue;
+    color_value_t color[COLOR_NUMBER];
 }rgb_t;
 
 typedef enum
@@ -22,11 +35,16 @@ typedef enum
     lightSensorOn = 0xAA,
 }light_sensor_t;
 
+typedef enum
+{
+    rgbSectionOne,
+    rgbSectionTwo
+}rgb_section_t;
+
 typedef struct
 {
-    rgb_t rgbOne;
-    rgb_t rgbTwo;
+    rgb_t rgb[SECTION_NUMBER];
     light_sensor_t lightSensor;
-}control_t;
+}device_configuration_t;
 
 #endif

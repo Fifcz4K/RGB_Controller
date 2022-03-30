@@ -23,14 +23,14 @@ static esp_err_t setDevice_post_handler(httpd_req_t *req)
         remaining -= ret;
     }
 
-    if(jsonParseSetDevice(buf, getDeviceConfig()) == jsonParseOk)
-    {
-        printDeviceConfig();
-    }
-    else
-    {
-        ESP_LOGI(TAG, "jsonParseSetDevice did not work properly\n");
-    }
+    // if(jsonParseSetDevice(buf, getDeviceConfig()) == jsonParseOk)
+    // {
+    //     printDeviceConfig();
+    // }
+    // else
+    // {
+    //     ESP_LOGI(TAG, "jsonParseSetDevice did not work properly\n");
+    // }
 
     // End response
     httpd_resp_send_chunk(req, NULL, 0);

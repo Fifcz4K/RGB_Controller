@@ -1,8 +1,6 @@
 #include <nvs_flash.h>
-#include "nvs_flash.h"
 #include "protocol_examples_common.h"
 
-#include "common.h"
 #include "models.h"
 #include "server_http.h"
 #include "outputs.h"

@@ -2,18 +2,40 @@
 
 static const char *TAG = "DEVICE_CONFIG.C";
 
-control_t deviceConfig;
+static device_configuration_t config;
 
-control_t* getDeviceConfig()
+void deviceConfigInit(void)
 {
-    return &deviceConfig;
+    for(uint8_t i = 0; i < SECTION_NUMBER; i++)
+    {
+        for(uint8_t j = 0; j < COLOR_NUMBER; j++)
+        {
+            config.rgb[i].color[j] = 0;
+        }
+    }
+
+    config.lightSensor = lightSensorOff;
 }
 
-void printDeviceConfig()
+void deviceConfigSetRGB(rgb_section_t section, color_value_t red, color_value_t green, color_value_t blue)
 {
-    ESP_LOGI(TAG, "RGB1");
-    ESP_LOGI(TAG, "R: %d G: %d B: %d", deviceConfig.rgbOne.red, deviceConfig.rgbOne.green, deviceConfig.rgbOne.blue);
-    ESP_LOGI(TAG, "RGB2");
-    ESP_LOGI(TAG, "R: %d G: %d B: %d", deviceConfig.rgbTwo.red, deviceConfig.rgbTwo.green, deviceConfig.rgbTwo.blue);
-    ESP_LOGI(TAG, "Light Sensor: %d\n", deviceConfig.lightSensor);
+    config.rgb[section].color[Red] = red;
+    config.rgb[section].color[Green] = green;
+    config.rgb[section].color[Blue] = blue;
 }
+
+void deviceConfigSetLightSensor(light_sensor_t value)
+{
+    config.lightSensor = value;
+}
+
+light_sensor_t deviceConfigGetLightSensor(void)
+{
+    return config.lightSensor;
+}
+
+color_value_t deviceConfigGetColor(rgb_section_t section, color_t color)
+{
+    return config.rgb[section].color[color];
+}
+

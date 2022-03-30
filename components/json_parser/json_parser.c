@@ -2,24 +2,24 @@
 
 static const char *TAG = "JSON_PARSER.C";
 
-static jsonParse_t jsonParseRGB(cJSON* jsonInput, rgb_t* rgb, const char* objectName)
-{
-    cJSON* jsonRGB = cJSON_GetObjectItem(jsonInput, objectName);
-    rgb->red = cJSON_GetObjectItem(jsonRGB, "R")->valueint;
-    rgb->green = cJSON_GetObjectItem(jsonRGB, "G")->valueint;
-    rgb->blue = cJSON_GetObjectItem(jsonRGB, "B")->valueint;
+// static jsonParse_t jsonParseRGB(cJSON* jsonInput, rgb_t* rgb, const char* objectName)
+// {
+//     cJSON* jsonRGB = cJSON_GetObjectItem(jsonInput, objectName);
+//     rgb->red = cJSON_GetObjectItem(jsonRGB, "R")->valueint;
+//     rgb->green = cJSON_GetObjectItem(jsonRGB, "G")->valueint;
+//     rgb->blue = cJSON_GetObjectItem(jsonRGB, "B")->valueint;
 
-    return jsonParseOk;
-}
+//     return jsonParseOk;
+// }
 
-jsonParse_t jsonParseSetDevice(const char* input, control_t* control) 
-{
-    cJSON* jsonRoot = cJSON_Parse(input);
+// jsonParse_t jsonParseSetDevice(const char* input, device_configuration_t* control) 
+// {
+//     cJSON* jsonRoot = cJSON_Parse(input);
 
-    jsonParseRGB(jsonRoot, &control->rgbOne, "RGB1");
-    jsonParseRGB(jsonRoot, &control->rgbTwo, "RGB2");
+//     jsonParseRGB(jsonRoot, &control->rgb[rgbSectionOne], "RGB1");
+//     jsonParseRGB(jsonRoot, &control->rgb[rgbSectionTwo], "RGB2");
 
-    control->lightSensor = cJSON_GetObjectItem(jsonRoot, "LiSen")->valueint;
+//     control->lightSensor = cJSON_GetObjectItem(jsonRoot, "LiSen")->valueint;
 
-    return jsonParseOk;
-}
+//     return jsonParseOk;
+// }
