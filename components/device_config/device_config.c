@@ -6,9 +6,9 @@ static device_configuration_t config;
 
 void deviceConfigInit(void)
 {
-    for(uint8_t i = 0; i < SECTION_NUMBER; i++)
+    for(uint8_t i = 0; i < rgbNumberOfSections; i++)
     {
-        for(uint8_t j = 0; j < COLOR_NUMBER; j++)
+        for(uint8_t j = 0; j < NumberOfColors; j++)
         {
             config.rgb[i].color[j] = 0;
         }
@@ -17,16 +17,26 @@ void deviceConfigInit(void)
     config.lightSensor = lightSensorOff;
 }
 
-void deviceConfigSetRGB(rgb_section_t section, color_value_t red, color_value_t green, color_value_t blue)
+bool deviceConfigSetRGB(rgb_section_t section, color_value_t red, color_value_t green, color_value_t blue)
 {
+    if(section >= rgbNumberOfSections)
+        return false;
+
     config.rgb[section].color[Red] = red;
     config.rgb[section].color[Green] = green;
     config.rgb[section].color[Blue] = blue;
+
+    return true;
 }
 
-void deviceConfigSetLightSensor(light_sensor_t value)
+bool deviceConfigSetLightSensor(light_sensor_t value)
 {
+    if(value != lightSensorOn && value != lightSensorOff)
+        return false;
+
     config.lightSensor = value;
+
+    return true;
 }
 
 light_sensor_t deviceConfigGetLightSensor(void)

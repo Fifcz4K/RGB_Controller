@@ -38,18 +38,27 @@ static void checkRGBValues(color_t r1, color_t g1, color_t b1, color_t r2, color
 void test_setting_colors(void)
 {
     checkRGBValues(0, 0, 0, 0, 0, 0);
-    deviceConfigSetRGB(rgbSectionOne, 100, 20, 30);
+
+    TEST_ASSERT_EQUAL(true, deviceConfigSetRGB(rgbSectionOne, 100, 20, 30));
     checkRGBValues(100, 20, 30, 0, 0, 0);
-    deviceConfigSetRGB(rgbSectionTwo, 50, 155, 255);
+
+    TEST_ASSERT_EQUAL(true, deviceConfigSetRGB(rgbSectionTwo, 50, 155, 255));
+    checkRGBValues(100, 20, 30, 50, 155, 255);
+
+    TEST_ASSERT_EQUAL(false, deviceConfigSetRGB(rgbNumberOfSections, 0, 1, 2));
     checkRGBValues(100, 20, 30, 50, 155, 255);
 }
 
 void test_setting_light_sensor(void)
 {
     TEST_ASSERT_EQUAL(lightSensorOff, deviceConfigGetLightSensor());
-    deviceConfigSetLightSensor(lightSensorOn);
+    TEST_ASSERT_EQUAL(true, deviceConfigSetLightSensor(lightSensorOn));
     TEST_ASSERT_EQUAL(lightSensorOn, deviceConfigGetLightSensor());
-    deviceConfigSetLightSensor(lightSensorOff);
+    TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(1));
+    TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(243));
+    TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(555));
+    TEST_ASSERT_EQUAL(true, deviceConfigSetLightSensor(lightSensorOn));
+    TEST_ASSERT_EQUAL(true, deviceConfigSetLightSensor(lightSensorOff));
     TEST_ASSERT_EQUAL(lightSensorOff, deviceConfigGetLightSensor());
 }
 

@@ -6,9 +6,6 @@
 #define FALSE 0
 #define TRUE 1
 
-#define SECTION_NUMBER 2
-#define COLOR_NUMBER 3
-
 typedef uint8_t color_value_t;
 
 typedef struct
@@ -21,12 +18,13 @@ typedef enum
 {
     Red,
     Green,
-    Blue
+    Blue,
+    NumberOfColors
 }color_t;
 
 typedef struct
 {
-    color_value_t color[COLOR_NUMBER];
+    color_value_t color[NumberOfColors];
 }rgb_t;
 
 typedef enum
@@ -38,12 +36,13 @@ typedef enum
 typedef enum
 {
     rgbSectionOne,
-    rgbSectionTwo
+    rgbSectionTwo,
+    rgbNumberOfSections
 }rgb_section_t;
 
 typedef struct
 {
-    rgb_t rgb[SECTION_NUMBER];
+    rgb_t rgb[rgbNumberOfSections];
     light_sensor_t lightSensor;
 }device_configuration_t;
 
