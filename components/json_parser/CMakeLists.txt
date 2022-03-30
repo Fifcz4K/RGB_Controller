@@ -1,3 +1,3 @@
-idf_component_register(SRCS "json_parser.c"
+idf_component_register(SRCS "json_parser.c" "cJSON/cJSON.c" "cJSON/cJSON_Utils.c"
                     INCLUDE_DIRS "."
                     REQUIRES common device_config)
