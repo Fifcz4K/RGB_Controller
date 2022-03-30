@@ -3,9 +3,6 @@
 
 #include "stdint.h"
 
-#define FALSE 0
-#define TRUE 1
-
 typedef struct
 {
     uint16_t adcTemperature;
@@ -19,11 +16,17 @@ typedef struct
     uint8_t blue;
 }rgb_t;
 
+typedef enum
+{
+    lightSensorOff = 0xA5,
+    lightSensorOn = 0xAA,
+}light_sensor_t;
+
 typedef struct
 {
     rgb_t rgbOne;
     rgb_t rgbTwo;
-    uint8_t lightSensor;
+    light_sensor_t lightSensor;
 }control_t;
 
 #endif

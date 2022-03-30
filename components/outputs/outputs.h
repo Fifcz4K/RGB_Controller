@@ -5,7 +5,7 @@
 #include "stdint.h"
 
 #define GPIO_R1  5
-#define GPIO_G1  4//18
+#define GPIO_G1  18
 #define GPIO_B1  19
 #define GPIO_R2  27
 #define GPIO_G2  26

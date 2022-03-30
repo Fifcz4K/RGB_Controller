@@ -12,4 +12,7 @@
 #include "esp_netif.h"
 #include "esp_eth.h"
 
+#define FALSE 0
+#define TRUE 1
+
 #endif
