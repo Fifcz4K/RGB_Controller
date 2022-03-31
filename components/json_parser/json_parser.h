@@ -3,6 +3,8 @@
 
 #include "cJSON.h"
 #include "models.h"
+#include "common.h"
+#include "device_config.h"
 
 typedef enum
 {
@@ -10,6 +12,6 @@ typedef enum
     jsonParseErr,
 }jsonParse_t;
 
-jsonParse_t jsonParseSetDevice(const char* jsonInput, device_configuration_t* control);
+jsonParse_t jsonParseSetConfiguration(const char* jsonInput);
 
 #endif

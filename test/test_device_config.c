@@ -20,7 +20,7 @@ void test_init(void)
     TEST_ASSERT_EQUAL(0, deviceConfigGetColor(rgbSectionTwo, Green));
     TEST_ASSERT_EQUAL(0, deviceConfigGetColor(rgbSectionTwo, Blue));
 
-
+    TEST_ASSERT_EQUAL(rgbProgram0, deviceConfigGetProgram());
     TEST_ASSERT_EQUAL(lightSensorOff, deviceConfigGetLightSensor());
 }
 
@@ -52,20 +52,88 @@ void test_setting_colors(void)
 void test_setting_light_sensor(void)
 {
     TEST_ASSERT_EQUAL(lightSensorOff, deviceConfigGetLightSensor());
+
     TEST_ASSERT_EQUAL(true, deviceConfigSetLightSensor(lightSensorOn));
     TEST_ASSERT_EQUAL(lightSensorOn, deviceConfigGetLightSensor());
+    
     TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(1));
     TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(243));
-    TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(555));
-    TEST_ASSERT_EQUAL(true, deviceConfigSetLightSensor(lightSensorOn));
+    TEST_ASSERT_EQUAL(lightSensorOn, deviceConfigGetLightSensor());
+
     TEST_ASSERT_EQUAL(true, deviceConfigSetLightSensor(lightSensorOff));
     TEST_ASSERT_EQUAL(lightSensorOff, deviceConfigGetLightSensor());
 }
 
+void test_setting_program(void)
+{
+    TEST_ASSERT_EQUAL(rgbProgram0, deviceConfigGetProgram());
 
+    TEST_ASSERT_EQUAL(true, deviceConfigSetProgram(rgbProgram1));
+    TEST_ASSERT_EQUAL(rgbProgram1, deviceConfigGetProgram());
 
+    TEST_ASSERT_EQUAL(true, deviceConfigSetProgram(rgbProgram4));
+    TEST_ASSERT_EQUAL(rgbProgram4, deviceConfigGetProgram());
 
+    TEST_ASSERT_EQUAL(false, deviceConfigSetProgram(rgbNumberOfPrograms));
+    TEST_ASSERT_EQUAL(rgbProgram4, deviceConfigGetProgram());
 
+    TEST_ASSERT_EQUAL(true, deviceConfigSetProgram(rgbProgram3));
+    TEST_ASSERT_EQUAL(rgbProgram3, deviceConfigGetProgram());
+}
+
+void test_get_full_config(void)
+{
+    device_configuration_t configToTest = {0};
+
+    deviceConfigSetRGB(rgbSectionOne, 10, 20, 30);
+    deviceConfigSetRGB(rgbSectionTwo, 100, 155, 255);
+    deviceConfigSetLightSensor(lightSensorOn);
+    deviceConfigSetProgram(rgbProgram3);
+
+    deviceConfigGet(&configToTest);
+
+    TEST_ASSERT_EQUAL(10, deviceConfigGetColor(rgbSectionOne, Red));
+    TEST_ASSERT_EQUAL(20, deviceConfigGetColor(rgbSectionOne, Green));
+    TEST_ASSERT_EQUAL(30, deviceConfigGetColor(rgbSectionOne, Blue));
+    TEST_ASSERT_EQUAL(100, deviceConfigGetColor(rgbSectionTwo, Red));
+    TEST_ASSERT_EQUAL(155, deviceConfigGetColor(rgbSectionTwo, Green));
+    TEST_ASSERT_EQUAL(255, deviceConfigGetColor(rgbSectionTwo, Blue));
+
+    TEST_ASSERT_EQUAL(lightSensorOn, deviceConfigGetLightSensor());
+
+    TEST_ASSERT_EQUAL(rgbProgram3, deviceConfigGetProgram());
+}
+
+void test_set_full_config(void)
+{
+    device_configuration_t configToTest = 
+    {
+        .rgb[rgbSectionOne].color[Red] = 100,
+        .rgb[rgbSectionOne].color[Green] = 0,
+        .rgb[rgbSectionOne].color[Blue] = 255,
+        .rgb[rgbSectionTwo].color[Red] = 88,
+        .rgb[rgbSectionTwo].color[Green] = 123,
+        .rgb[rgbSectionTwo].color[Blue] = 189,
+        .lightSensor = lightSensorOn,
+        .program = rgbProgram1
+    };
+
+    TEST_ASSERT_EQUAL(true, deviceConfigSet(&configToTest));
+
+    configToTest.lightSensor = lightSensorOff;
+    configToTest.program = rgbProgram4;
+
+    TEST_ASSERT_EQUAL(true, deviceConfigSet(&configToTest));
+
+    configToTest.lightSensor = 0x01;
+
+    TEST_ASSERT_EQUAL(false, deviceConfigSet(&configToTest));
+
+    configToTest.lightSensor = lightSensorOff;
+    configToTest.program = rgbNumberOfPrograms;
+
+    TEST_ASSERT_EQUAL(false, deviceConfigSet(&configToTest));
+}
 
 
 

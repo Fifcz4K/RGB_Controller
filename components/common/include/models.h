@@ -40,9 +40,20 @@ typedef enum
     rgbNumberOfSections
 }rgb_section_t;
 
+typedef enum
+{
+    rgbProgram0,
+    rgbProgram1,
+    rgbProgram2,
+    rgbProgram3,
+    rgbProgram4,
+    rgbNumberOfPrograms
+}rgb_program_t;
+
 typedef struct
 {
     rgb_t rgb[rgbNumberOfSections];
+    rgb_program_t program;
     light_sensor_t lightSensor;
 }device_configuration_t;
 

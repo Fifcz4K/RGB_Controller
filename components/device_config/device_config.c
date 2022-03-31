@@ -14,7 +14,9 @@ void deviceConfigInit(void)
         }
     }
 
+    config.program = rgbProgram0;
     config.lightSensor = lightSensorOff;
+    
 }
 
 bool deviceConfigSetRGB(rgb_section_t section, color_value_t red, color_value_t green, color_value_t blue)
@@ -39,6 +41,16 @@ bool deviceConfigSetLightSensor(light_sensor_t value)
     return true;
 }
 
+bool deviceConfigSetProgram(rgb_program_t program)
+{
+    if(program >= rgbNumberOfPrograms)
+        return false;
+
+    config.program = program;
+
+    return true;
+}
+
 light_sensor_t deviceConfigGetLightSensor(void)
 {
     return config.lightSensor;
@@ -49,3 +61,35 @@ color_value_t deviceConfigGetColor(rgb_section_t section, color_t color)
     return config.rgb[section].color[color];
 }
 
+rgb_program_t deviceConfigGetProgram(void)
+{
+    return config.program;
+}
+
+static bool deviceConfigParamsOk(light_sensor_t lightSensor, rgb_program_t program)
+{
+    bool result = true;
+
+    if(lightSensor != lightSensorOff && lightSensor != lightSensorOn)
+        result = false;
+
+    if(program >= rgbNumberOfPrograms)
+        result = false;
+
+    return result;
+}
+
+bool deviceConfigSet(device_configuration_t *tempConfig)
+{
+    if(deviceConfigParamsOk(tempConfig->lightSensor, tempConfig->program) == false)
+        return false;
+
+    memcpy(&config, tempConfig, sizeof(device_configuration_t));
+
+    return true;
+}
+
+void deviceConfigGet(device_configuration_t *tempConfig)
+{
+    memcpy(tempConfig, &config, sizeof(device_configuration_t));
+}
