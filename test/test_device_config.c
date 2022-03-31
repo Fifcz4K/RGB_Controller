@@ -56,8 +56,8 @@ void test_setting_light_sensor(void)
     TEST_ASSERT_EQUAL(true, deviceConfigSetLightSensor(lightSensorOn));
     TEST_ASSERT_EQUAL(lightSensorOn, deviceConfigGetLightSensor());
     
-    TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(1));
-    TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(243));
+    TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(2));
+    TEST_ASSERT_EQUAL(false, deviceConfigSetLightSensor(255));
     TEST_ASSERT_EQUAL(lightSensorOn, deviceConfigGetLightSensor());
 
     TEST_ASSERT_EQUAL(true, deviceConfigSetLightSensor(lightSensorOff));
@@ -125,7 +125,7 @@ void test_set_full_config(void)
 
     TEST_ASSERT_EQUAL(true, deviceConfigSet(&configToTest));
 
-    configToTest.lightSensor = 0x01;
+    configToTest.lightSensor = 0x55;
 
     TEST_ASSERT_EQUAL(false, deviceConfigSet(&configToTest));
 

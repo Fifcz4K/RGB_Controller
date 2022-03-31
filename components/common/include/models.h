@@ -29,8 +29,8 @@ typedef struct
 
 typedef enum
 {
-    lightSensorOff = 0xA5,
-    lightSensorOn = 0xAA,
+    lightSensorOff,
+    lightSensorOn
 }light_sensor_t;
 
 typedef enum
