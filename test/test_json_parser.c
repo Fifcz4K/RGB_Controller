@@ -26,7 +26,15 @@ void tearDown(void)
     
 }
 
-static bool checkConfig(color_t r1, color_t g1, color_t b1, color_t r2, color_t g2, color_t b2, light_sensor_t lightSensor, rgb_program_t program)
+static bool checkConfig(
+    color_t r1,
+    color_t g1,
+    color_t b1,
+    color_t r2,
+    color_t g2,
+    color_t b2,
+    light_sensor_t lightSensor,
+    rgb_program_t program)
 {
     TEST_ASSERT_EQUAL(r1, deviceConfigGetColor(rgbSectionOne, Red));
     TEST_ASSERT_EQUAL(g1, deviceConfigGetColor(rgbSectionOne, Green));
@@ -49,7 +57,15 @@ void test_parse_set_config_pass_1(void)
         }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
-    checkConfig(DEFAULT_R1, DEFAULT_G1, DEFAULT_B1, DEFAULT_R2, DEFAULT_G2, DEFAULT_B2, lightSensorOn, rgbProgram2);
+    checkConfig(
+    DEFAULT_R1,
+    DEFAULT_G1,
+    DEFAULT_B1,
+    DEFAULT_R2,
+    DEFAULT_G2,
+    DEFAULT_B2,
+    lightSensorOn,
+    rgbProgram2);
 }
 
 void test_parse_set_config_pass_2(void)
@@ -60,7 +76,15 @@ void test_parse_set_config_pass_2(void)
         }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
-    checkConfig(DEFAULT_R1, DEFAULT_G1, DEFAULT_B1, DEFAULT_R2, DEFAULT_G2, DEFAULT_B2, lightSensorOff, rgbProgram4);
+    checkConfig(
+    DEFAULT_R1, 
+    DEFAULT_G1,
+    DEFAULT_B1,
+    DEFAULT_R2,
+    DEFAULT_G2,
+    DEFAULT_B2,
+    lightSensorOff,
+    rgbProgram4);
 }
 
 void test_parse_set_config_pass_3(void)
@@ -76,7 +100,15 @@ void test_parse_set_config_pass_3(void)
     }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
-    checkConfig(DEFAULT_R1, 25, 255, DEFAULT_R2, DEFAULT_G2, DEFAULT_B2, lightSensorOn, rgbProgram0);
+    checkConfig(
+    DEFAULT_R1,
+    25,
+    255,
+    DEFAULT_R2,
+    DEFAULT_G2,
+    DEFAULT_B2,
+    lightSensorOn,
+    rgbProgram0);
 }
 
 void test_parse_set_config_pass_4(void)
@@ -96,7 +128,15 @@ void test_parse_set_config_pass_4(void)
     }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
-    checkConfig(200, 199, DEFAULT_B1, 1, 2, 3, DEFAULT_LIGHT_SENSOR, DEFAULT_PROGRAM);
+    checkConfig(
+    200, 
+    199, 
+    DEFAULT_B1, 
+    1, 
+    2, 
+    3, 
+    DEFAULT_LIGHT_SENSOR, 
+    DEFAULT_PROGRAM);
 }
 
 void test_parse_set_config_pass_5(void)
@@ -110,7 +150,15 @@ void test_parse_set_config_pass_5(void)
     }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
-    checkConfig(DEFAULT_R1, DEFAULT_G1, DEFAULT_B1, DEFAULT_R2, DEFAULT_G2, 3, DEFAULT_LIGHT_SENSOR, rgbProgram3);
+    checkConfig(
+    DEFAULT_R1, 
+    DEFAULT_G1, 
+    DEFAULT_B1, 
+    DEFAULT_R2, 
+    DEFAULT_G2, 
+    3, 
+    DEFAULT_LIGHT_SENSOR, 
+    rgbProgram3);
 }
 
 void test_parse_set_config_fail_1(void)
@@ -131,7 +179,15 @@ void test_parse_set_config_fail_1(void)
     }";
 
     TEST_ASSERT_EQUAL(jsonParseErr, jsonParseSetConfiguration(jsonToParse));
-    checkConfig(DEFAULT_R1, DEFAULT_G1, DEFAULT_B1, DEFAULT_R2, DEFAULT_G2, DEFAULT_B2, DEFAULT_LIGHT_SENSOR, DEFAULT_PROGRAM);
+    checkConfig(
+    DEFAULT_R1, 
+    DEFAULT_G1, 
+    DEFAULT_B1, 
+    DEFAULT_R2, 
+    DEFAULT_G2, 
+    DEFAULT_B2, 
+    DEFAULT_LIGHT_SENSOR, 
+    DEFAULT_PROGRAM);
 }
 
 void test_parse_set_config_fail_2(void)
@@ -142,7 +198,15 @@ void test_parse_set_config_fail_2(void)
     }";
 
     TEST_ASSERT_EQUAL(jsonParseErr, jsonParseSetConfiguration(jsonToParse));
-    checkConfig(DEFAULT_R1, DEFAULT_G1, DEFAULT_B1, DEFAULT_R2, DEFAULT_G2, DEFAULT_B2, DEFAULT_LIGHT_SENSOR, DEFAULT_PROGRAM);
+    checkConfig(
+    DEFAULT_R1, 
+    DEFAULT_G1, 
+    DEFAULT_B1, 
+    DEFAULT_R2, 
+    DEFAULT_G2, 
+    DEFAULT_B2, 
+    DEFAULT_LIGHT_SENSOR, 
+    DEFAULT_PROGRAM);
 }
 
 

@@ -21,7 +21,6 @@ jsonParse_t jsonParseSetConfiguration(const char* jsonInput)
     device_configuration_t tempConfig;
     deviceConfigGet(&tempConfig);
     cJSON* jsonRoot = cJSON_Parse(jsonInput);
-    // printf("%s\n:", cJSON_Print(jsonRoot));
 
     if(cJSON_HasObjectItem(jsonRoot, "RGB1"))
     {
