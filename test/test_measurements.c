@@ -6,8 +6,16 @@
 #define MIN_ADC_VALUE 0
 #define MAX_ADC_VALUE 4095 // (2 ^ adc_resolution) - 1
 #define MAX_TEMPERATURE_VALUE (550 + MIN_TEMPERATURE_VALUE) // 550 = elements in adc_temperature_values[] - 1
+
 #define ADC_TEMPERATURE_VALUES_SECOND_ELEMENT 607
 #define ADC_TEMPERATURE_VALUES_ELEMENT_ONE_BEFORE_LAST 2857
+
+#define RANDOM_TEST_1_ADC_VALUE 2000
+#define RANDOM_TEST_1_TEMPERATURE 238
+#define RANDOM_TEST_2_ADC_VALUE 783
+#define RANDOM_TEST_2_TEMPERATURE -44
+#define RANDOM_TEST_3_ADC_VALUE 1112
+#define RANDOM_TEST_3_TEMPERATURE 42
 
 void setUp(void)
 {
@@ -65,8 +73,8 @@ void test_temperature_adc_value_one_before_last(void)
 
 void test_temperature_random_value_1(void)
 {
-    adc_value_t adcValue = 2000;
-    temperature_t expectedTemperature = 238;
+    adc_value_t adcValue = RANDOM_TEST_1_ADC_VALUE;
+    temperature_t expectedTemperature = RANDOM_TEST_1_TEMPERATURE;
     adcGetValue_ExpectAndReturn(adcTemperatureChannel, adcValue);
 
     measurementProcess(measureTemperature);
@@ -76,8 +84,19 @@ void test_temperature_random_value_1(void)
 
 void test_temperature_random_value_2(void)
 {
-    adc_value_t adcValue = 783;
-    temperature_t expectedTemperature = -44;
+    adc_value_t adcValue = RANDOM_TEST_2_ADC_VALUE;
+    temperature_t expectedTemperature = RANDOM_TEST_2_TEMPERATURE;
+    adcGetValue_ExpectAndReturn(adcTemperatureChannel, adcValue);
+
+    measurementProcess(measureTemperature);
+
+    TEST_ASSERT_EQUAL(expectedTemperature, measurementTemperatureGet());
+}
+
+void test_temperature_random_value_3(void)
+{
+    adc_value_t adcValue = RANDOM_TEST_3_ADC_VALUE;
+    temperature_t expectedTemperature = RANDOM_TEST_3_TEMPERATURE;
     adcGetValue_ExpectAndReturn(adcTemperatureChannel, adcValue);
 
     measurementProcess(measureTemperature);
