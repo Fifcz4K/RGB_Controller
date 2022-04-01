@@ -3,8 +3,13 @@
 
 #include "common.h"
 #include "models.h"
+#include "f_adc.h"
 
-light_t measurementCountLightFromAdc(uint16_t adcValue);
-temperature_t measurementCountTemperatureFromAdc(uint16_t adcValue);
+#define MIN_TEMPERATURE_VALUE (-100) // -100 = -10*C
+
+void measurementProcess(measurement_command_t command);
+
+light_t measurementLightGet(void);
+temperature_t measurementTemperatureGet(void);
 
 #endif

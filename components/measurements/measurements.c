@@ -1,15 +1,65 @@
 #include "measurements.h"
+#include "adc_light_values.h"
+#include "adc_temperature_values.h"
 
 static measurements_t measurements;
 
-light_t measurementCountLightFromAdc(uint16_t adcValue)
+static light_t measurementCountLightFromAdc(adc_value_t adcValue)
 {
-
-    return;
+    //todo
+    return 0;
 }
 
-temperature_t measurementCountTemperatureFromAdc(uint16_t adcValue)
+static temperature_t measurementCountTemperatureFromAdc(uint16_t adcValue)
 {
+    uint16_t adcDiff = 0xFFFF;
+    uint16_t absValue = 0;
+    uint16_t remember_i = 0;
 
-    return;
+    for(uint16_t i = 0; i < ADC_TEMPERATURE_VALUES_ARRAY_SIZE; i++)
+    {
+        absValue = abs(adcValue - adcTemperatureValueGet(i));
+        if(absValue <= adcDiff)
+        {
+            adcDiff = absValue;
+            remember_i = i;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return remember_i + MIN_TEMPERATURE_VALUE;
+}
+
+void measurementProcess(measurement_command_t command)
+{
+    uint16_t adcValue = 0;
+
+    switch(command)
+    {
+        case measureTemperature:
+            adcValue = adcGetValue(adcTemperatureChannel);
+            measurements.temperature = measurementCountTemperatureFromAdc(adcValue);
+        break;
+
+        case measureLight:
+            adcValue = adcGetValue(adcLightChannel);
+            measurements.light = measurementCountLightFromAdc(adcValue);
+        break;
+
+        default:
+        break;
+    }
+}
+
+light_t measurementLightGet(void)
+{
+    return measurements.light;
+}
+
+temperature_t measurementTemperatureGet(void)
+{
+    return measurements.temperature;
 }

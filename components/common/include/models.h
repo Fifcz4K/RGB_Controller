@@ -7,14 +7,20 @@
 #define TRUE 1
 
 typedef uint8_t color_value_t;
-typedef uint16_t temperature_t;
+typedef int16_t temperature_t;
 typedef uint8_t light_t;
 
 typedef struct
 {
-    temperature_t temperature;
-    light_t light;
+    temperature_t temperature; // operating on temperature multiplied by 10 to avoid float data type
+    light_t light; // 0 - 100%
 }measurements_t;
+
+typedef enum
+{
+    measureTemperature,
+    measureLight
+}measurement_command_t;
 
 typedef enum
 {
