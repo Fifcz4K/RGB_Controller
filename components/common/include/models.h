@@ -7,11 +7,13 @@
 #define TRUE 1
 
 typedef uint8_t color_value_t;
+typedef uint16_t temperature_t;
+typedef uint8_t light_t;
 
 typedef struct
 {
-    uint16_t temperature;
-    uint8_t light;
+    temperature_t temperature;
+    light_t light;
 }measurements_t;
 
 typedef enum
