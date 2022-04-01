@@ -10,8 +10,8 @@ typedef uint8_t color_value_t;
 
 typedef struct
 {
-    uint16_t adcTemperature;
-    uint16_t adcLight;
+    uint16_t temperature;
+    uint8_t light;
 }measurements_t;
 
 typedef enum
