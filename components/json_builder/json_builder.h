@@ -5,7 +5,9 @@
 #include "models.h"
 #include "common.h"
 #include "device_config.h"
+#include "measurements.h"
 
 cJSON* jsonBuildConfiguration(void);
+cJSON* jsonBuildMeasurements(void);
 
 #endif

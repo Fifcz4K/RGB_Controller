@@ -33,8 +33,8 @@ cJSON* jsonBuildMeasurements(void)
 {
     cJSON *jsonMeasurements = cJSON_CreateObject();
 
-    // cJSON_AddBoolToObject(jsonMeasurements, "LiSen", tempConfig.lightSensor);
-    // cJSON_AddNumberToObject(jsonMeasurements, "Prog", tempConfig.program);
+    cJSON_AddNumberToObject(jsonMeasurements, "Temp", measurementTemperatureGet());
+    cJSON_AddNumberToObject(jsonMeasurements, "Light", measurementLightGet());
 
     return jsonMeasurements;
 }
