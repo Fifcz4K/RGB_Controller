@@ -2,7 +2,7 @@
 
 static const char *TAG = "SERVER_HTTP.C";
 
-static esp_err_t setDevice_post_handler(httpd_req_t *req)
+static esp_err_t setConfiguration_post_handler(httpd_req_t *req)
 {
     char buf[250];
     int ret, remaining = req->content_len;
@@ -23,14 +23,10 @@ static esp_err_t setDevice_post_handler(httpd_req_t *req)
         remaining -= ret;
     }
 
-    // if(jsonParseSetDevice(buf, getDeviceConfig()) == jsonParseOk)
-    // {
-    //     printDeviceConfig();
-    // }
-    // else
-    // {
-    //     ESP_LOGI(TAG, "jsonParseSetDevice did not work properly\n");
-    // }
+    if(jsonParseSetConfiguration(buf) == jsonParseErr)
+    {
+        ESP_LOGI(TAG, "jsonParseSetConfiguration did not work properly\n");
+    }
 
     // End response
     httpd_resp_send_chunk(req, NULL, 0);
@@ -38,9 +34,9 @@ static esp_err_t setDevice_post_handler(httpd_req_t *req)
 }
 
 static const httpd_uri_t setDevice = {
-    .uri       = "/SetDevice",
+    .uri       = "/SetConfiguration",
     .method    = HTTP_POST,
-    .handler   = setDevice_post_handler,
+    .handler   = setConfiguration_post_handler,
     .user_ctx  = NULL
 };
 

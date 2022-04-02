@@ -4,6 +4,7 @@
 #include "models.h"
 #include "server_http.h"
 #include "outputs.h"
+#include "device_control.h"
 
 static const char *TAG = "MAIN.C";
 
@@ -11,10 +12,11 @@ static void systemInit(void);
 
 void app_main(void)
 {
+    deviceConfigInit();
+    outputs_init();
+    deviceControlInit();
     systemInit();
     startServerHttp();
-    outputs_init();
-    // deviceControlInit();
 }
 
 static void systemInit(void)

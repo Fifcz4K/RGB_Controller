@@ -27,7 +27,14 @@
 #define LEDC_LS_CH5_GPIO       (GPIO_B2)
 #define LEDC_LS_CH5_CHANNEL    LEDC_CHANNEL_5
 
-#define LEDC_TEST_CH_NUM       (6)
+#define RGB_OUTPUTS_NUMBER       (6)
+
+#define RGB_OUTPUT_RED_1    0
+#define RGB_OUTPUT_GREEN_1  2
+#define RGB_OUTPUT_BLUE_1   1
+#define RGB_OUTPUT_RED_2    3
+#define RGB_OUTPUT_GREEN_2  5
+#define RGB_OUTPUT_BLUE_2   4
 
 #define PWM_RESOLUTION (8192)
 #define MAX_COLOR_VALUE (255)

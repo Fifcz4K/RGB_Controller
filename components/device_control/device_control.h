@@ -4,6 +4,7 @@
 #include <esp_event.h>
 
 #include "models.h"
+#include "outputs.h"
 #include "device_config.h"
 
 void deviceControlInit(void);

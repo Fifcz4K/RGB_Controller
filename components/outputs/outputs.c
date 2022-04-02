@@ -2,7 +2,7 @@
 
 static const char *TAG = "OUTPUTS.C";
 
-ledc_channel_config_t ledc_channel[LEDC_TEST_CH_NUM] = 
+ledc_channel_config_t ledc_channel[RGB_OUTPUTS_NUMBER] = 
 {
     {
         .channel    = LEDC_LS_CH0_CHANNEL,
@@ -68,8 +68,9 @@ void outputs_init(void)
 
     ledc_timer_config(&ledc_timer);
 
-    for (ch = 0; ch < LEDC_TEST_CH_NUM; ch++) 
+    for (ch = 0; ch < RGB_OUTPUTS_NUMBER; ch++) 
     {
+        outputs_setPWM(ch, 0);
         ledc_channel_config(&ledc_channel[ch]);
     }
 }
