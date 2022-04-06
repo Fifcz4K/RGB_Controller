@@ -34,7 +34,7 @@ static bool checkConfig(
     color_t g2,
     color_t b2,
     light_sensor_t lightSensor,
-    rgb_program_t program)
+    rgb_program_number_t program)
 {
     TEST_ASSERT_EQUAL(r1, deviceConfigGetColor(rgbSectionOne, Red));
     TEST_ASSERT_EQUAL(g1, deviceConfigGetColor(rgbSectionOne, Green));

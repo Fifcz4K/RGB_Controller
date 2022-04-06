@@ -1,7 +1,6 @@
 #ifndef _OUTPUTS_H_
 #define _OUTPUTS_H_
 
-#include "driver/ledc.h"
 #include "stdint.h"
 
 #define GPIO_R1  5

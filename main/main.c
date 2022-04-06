@@ -4,7 +4,7 @@
 #include "models.h"
 #include "server_http.h"
 #include "outputs.h"
-#include "device_control.h"
+#include "device_task_handler.h"
 
 static const char *TAG = "MAIN.C";
 
@@ -14,7 +14,7 @@ void app_main(void)
 {
     deviceConfigInit();
     outputs_init();
-    deviceControlInit();
+    deviceTasksInit();
     systemInit();
     startServerHttp();
 }

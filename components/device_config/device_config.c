@@ -41,7 +41,7 @@ bool deviceConfigSetLightSensor(light_sensor_t value)
     return true;
 }
 
-bool deviceConfigSetProgram(rgb_program_t program)
+bool deviceConfigSetProgram(rgb_program_number_t program)
 {
     if(program >= rgbNumberOfPrograms)
         return false;
@@ -61,12 +61,12 @@ color_value_t deviceConfigGetColor(rgb_section_t section, color_t color)
     return config.rgb[section].color[color];
 }
 
-rgb_program_t deviceConfigGetProgram(void)
+rgb_program_number_t deviceConfigGetProgram(void)
 {
     return config.program;
 }
 
-static bool deviceConfigParamsOk(light_sensor_t lightSensor, rgb_program_t program)
+static bool deviceConfigParamsOk(light_sensor_t lightSensor, rgb_program_number_t program)
 {
     bool result = true;
 

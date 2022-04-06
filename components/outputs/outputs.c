@@ -1,4 +1,5 @@
 #include "outputs.h"
+#include "driver/ledc.h"
 
 static const char *TAG = "OUTPUTS.C";
 

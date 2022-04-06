@@ -6,4 +6,6 @@
 #include "string.h"
 #include "stdlib.h"
 
+#define DELAY(delay) vTaskDelay(delay / portTICK_RATE_MS)
+
 #endif
