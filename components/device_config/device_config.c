@@ -12,9 +12,9 @@ void deviceConfigInit(void)
         {
             config.rgb[i].color[j] = 0;
         }
+        config.rgb[i].program = rgbProgram0;
     }
 
-    config.program = rgbProgram0;
     config.lightSensor = lightSensorOff;
     
 }
@@ -41,12 +41,15 @@ bool deviceConfigSetLightSensor(light_sensor_t value)
     return true;
 }
 
-bool deviceConfigSetProgram(rgb_program_number_t program)
+bool deviceConfigSetProgram(rgb_section_t section, rgb_program_number_t program)
 {
     if(program >= rgbNumberOfPrograms)
         return false;
 
-    config.program = program;
+    if(section >= rgbNumberOfSections)
+        return false;
+
+    config.rgb[section].program = program;
 
     return true;
 }
@@ -61,19 +64,22 @@ color_value_t deviceConfigGetColor(rgb_section_t section, color_t color)
     return config.rgb[section].color[color];
 }
 
-rgb_program_number_t deviceConfigGetProgram(void)
+rgb_program_number_t deviceConfigGetProgram(rgb_section_t section)
 {
-    return config.program;
+    return config.rgb[section].program;
 }
 
-static bool deviceConfigParamsOk(light_sensor_t lightSensor, rgb_program_number_t program)
+static bool deviceConfigParamsOk(light_sensor_t lightSensor, rgb_program_number_t rgbProgram1, rgb_program_number_t rgbProgram2)
 {
     bool result = true;
 
     if(lightSensor != lightSensorOff && lightSensor != lightSensorOn)
         result = false;
 
-    if(program >= rgbNumberOfPrograms)
+    if(rgbProgram1 >= rgbNumberOfPrograms)
+        result = false;
+
+    if(rgbProgram2 >= rgbNumberOfPrograms)
         result = false;
 
     return result;
@@ -81,7 +87,7 @@ static bool deviceConfigParamsOk(light_sensor_t lightSensor, rgb_program_number_
 
 bool deviceConfigSet(device_configuration_t *tempConfig)
 {
-    if(deviceConfigParamsOk(tempConfig->lightSensor, tempConfig->program) == false)
+    if(deviceConfigParamsOk(tempConfig->lightSensor, tempConfig->rgb[rgbSectionOne].program, tempConfig->rgb[rgbSectionTwo].program) == false)
         return false;
 
     memcpy(&config, tempConfig, sizeof(device_configuration_t));

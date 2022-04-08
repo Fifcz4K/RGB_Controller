@@ -11,14 +11,16 @@
 #define DEFAULT_G2 200
 #define DEFAULT_B2 255
 #define DEFAULT_LIGHT_SENSOR lightSensorOn
-#define DEFAULT_PROGRAM rgbProgram2
+#define DEFAULT_PROGRAM_1 rgbProgram2
+#define DEFAULT_PROGRAM_2 rgbProgram3
 
 void setUp(void)
 {
     deviceConfigSetRGB(rgbSectionOne, DEFAULT_R1, DEFAULT_G1, DEFAULT_B1);
     deviceConfigSetRGB(rgbSectionTwo, DEFAULT_R2, DEFAULT_G2, DEFAULT_B2);
     deviceConfigSetLightSensor(DEFAULT_LIGHT_SENSOR);
-    deviceConfigSetProgram(DEFAULT_PROGRAM);
+    deviceConfigSetProgram(rgbSectionOne, DEFAULT_PROGRAM_1);
+    deviceConfigSetProgram(rgbSectionTwo, DEFAULT_PROGRAM_2);
 }
 
 void tearDown(void)
@@ -34,7 +36,8 @@ static bool checkConfig(
     color_t g2,
     color_t b2,
     light_sensor_t lightSensor,
-    rgb_program_number_t program)
+    rgb_program_number_t programSectionOne,
+    rgb_program_number_t programSectionTwo)
 {
     TEST_ASSERT_EQUAL(r1, deviceConfigGetColor(rgbSectionOne, Red));
     TEST_ASSERT_EQUAL(g1, deviceConfigGetColor(rgbSectionOne, Green));
@@ -46,14 +49,18 @@ static bool checkConfig(
 
     TEST_ASSERT_EQUAL(lightSensor, deviceConfigGetLightSensor());
 
-    TEST_ASSERT_EQUAL(program, deviceConfigGetProgram());
+    TEST_ASSERT_EQUAL(programSectionOne, deviceConfigGetProgram(rgbSectionOne));
+    TEST_ASSERT_EQUAL(programSectionTwo, deviceConfigGetProgram(rgbSectionTwo));
 }
 
 void test_parse_set_config_pass_1(void)
 {
     char* jsonToParse = "{  \
-        \"LiSen\": true,    \
-        \"Prog\": 2         \
+        \"RGB1\":           \
+            {               \
+            \"Prog\": 2     \
+            }               \
+        \"LiSen\": true     \
         }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
@@ -65,14 +72,18 @@ void test_parse_set_config_pass_1(void)
     DEFAULT_G2,
     DEFAULT_B2,
     lightSensorOn,
-    rgbProgram2);
+    rgbProgram2,
+    DEFAULT_PROGRAM_2);
 }
 
 void test_parse_set_config_pass_2(void)
 {
     char* jsonToParse = "{  \
-        \"LiSen\": false,    \
-        \"Prog\": 4         \
+        \"RGB2\":           \
+            {               \
+            \"Prog\": 4     \
+            },              \
+        \"LiSen\": false    \
         }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
@@ -84,6 +95,7 @@ void test_parse_set_config_pass_2(void)
     DEFAULT_G2,
     DEFAULT_B2,
     lightSensorOff,
+    DEFAULT_PROGRAM_1,
     rgbProgram4);
 }
 
@@ -93,10 +105,14 @@ void test_parse_set_config_pass_3(void)
     \"RGB1\":               \
     {                       \
         \"G\": 25,          \
-        \"B\" : 255         \
+        \"B\" : 255,        \
+        \"Prog\": 0         \
     },                      \
-    \"LiSen\": true,        \
-    \"Prog\": 0             \
+    \"RGB2\":               \
+    {                       \
+        \"Prog\": 1         \
+    },                      \
+    \"LiSen\": true         \
     }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
@@ -108,7 +124,8 @@ void test_parse_set_config_pass_3(void)
     DEFAULT_G2,
     DEFAULT_B2,
     lightSensorOn,
-    rgbProgram0);
+    rgbProgram0,
+    rgbProgram1);
 }
 
 void test_parse_set_config_pass_4(void)
@@ -136,7 +153,8 @@ void test_parse_set_config_pass_4(void)
     2, 
     3, 
     DEFAULT_LIGHT_SENSOR, 
-    DEFAULT_PROGRAM);
+    DEFAULT_PROGRAM_1,
+    DEFAULT_PROGRAM_2);
 }
 
 void test_parse_set_config_pass_5(void)
@@ -145,8 +163,7 @@ void test_parse_set_config_pass_5(void)
     \"RGB2\":               \
     {                       \
         \"B\": 3            \
-    },                      \
-    \"Prog\": 3             \
+    }                       \
     }";
 
     TEST_ASSERT_EQUAL(jsonParseOk, jsonParseSetConfiguration(jsonToParse));
@@ -158,7 +175,8 @@ void test_parse_set_config_pass_5(void)
     DEFAULT_G2, 
     3, 
     DEFAULT_LIGHT_SENSOR, 
-    rgbProgram3);
+    DEFAULT_PROGRAM_1,
+    DEFAULT_PROGRAM_2);
 }
 
 void test_parse_set_config_fail_1(void)
@@ -187,14 +205,18 @@ void test_parse_set_config_fail_1(void)
     DEFAULT_G2, 
     DEFAULT_B2, 
     DEFAULT_LIGHT_SENSOR, 
-    DEFAULT_PROGRAM);
+    DEFAULT_PROGRAM_1,
+    DEFAULT_PROGRAM_2);
 }
 
 void test_parse_set_config_fail_2(void)
 {
     char *jsonToParse = "{  \
-    \"LiSen\": true,        \
-    \"Prog\": 10            \
+    \"RGB1\":               \
+    {                       \
+        \"Prog\": 10        \
+    },                      \
+    \"LiSen\": true         \
     }";
 
     TEST_ASSERT_EQUAL(jsonParseErr, jsonParseSetConfiguration(jsonToParse));
@@ -206,7 +228,8 @@ void test_parse_set_config_fail_2(void)
     DEFAULT_G2, 
     DEFAULT_B2, 
     DEFAULT_LIGHT_SENSOR, 
-    DEFAULT_PROGRAM);
+    DEFAULT_PROGRAM_1,
+    DEFAULT_PROGRAM_2);
 }
 
 

@@ -9,6 +9,7 @@ static void jsonBuildRGB(cJSON *jsonConfig, const char *objectName, rgb_t *rgb)
     cJSON_AddNumberToObject(jsonRGB, "R", rgb->color[Red]);
     cJSON_AddNumberToObject(jsonRGB, "G", rgb->color[Green]);
     cJSON_AddNumberToObject(jsonRGB, "B", rgb->color[Blue]);
+    cJSON_AddNumberToObject(jsonRGB, "Prog", rgb->program);
 
     cJSON_AddItemToObject(jsonConfig, objectName, jsonRGB);
 }
@@ -24,7 +25,6 @@ cJSON* jsonBuildConfiguration(void)
     jsonBuildRGB(jsonConfig, "RGB2", &tempConfig.rgb[rgbSectionTwo]);
 
     cJSON_AddBoolToObject(jsonConfig, "LiSen", tempConfig.lightSensor);
-    cJSON_AddNumberToObject(jsonConfig, "Prog", tempConfig.program);
 
     return jsonConfig;
 }

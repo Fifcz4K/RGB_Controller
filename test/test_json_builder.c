@@ -39,7 +39,8 @@ void test_build_get_config_1(void)
     deviceConfigSetRGB(rgbSectionOne, 10, 15, 25);
     deviceConfigSetRGB(rgbSectionTwo, 100, 200, 255);
     deviceConfigSetLightSensor(lightSensorOn);
-    deviceConfigSetProgram(rgbProgram1);
+    deviceConfigSetProgram(rgbSectionOne, rgbProgram1);
+    deviceConfigSetProgram(rgbSectionTwo, rgbProgram2);
 
     buildParseAndCompare();
 }
@@ -49,7 +50,8 @@ void test_build_get_config_2(void)
     deviceConfigSetRGB(rgbSectionOne, 255, 255, 255);
     deviceConfigSetRGB(rgbSectionTwo, 255, 255, 255);
     deviceConfigSetLightSensor(lightSensorOff);
-    deviceConfigSetProgram(rgbProgram4);
+    deviceConfigSetProgram(rgbSectionOne, rgbProgram3);
+    deviceConfigSetProgram(rgbSectionTwo, rgbProgram1);
 
     buildParseAndCompare();
 }
@@ -59,7 +61,8 @@ void test_build_get_config_3(void)
     deviceConfigSetRGB(rgbSectionOne, 0, 0, 0);
     deviceConfigSetRGB(rgbSectionTwo, 0, 0, 0);
     deviceConfigSetLightSensor(lightSensorOn);
-    deviceConfigSetProgram(rgbProgram0);
+    deviceConfigSetProgram(rgbSectionOne, rgbProgram0);
+    deviceConfigSetProgram(rgbSectionTwo, rgbProgram4);
 
     buildParseAndCompare();
 }

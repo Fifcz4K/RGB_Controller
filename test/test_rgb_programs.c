@@ -14,7 +14,7 @@ void tearDown(void)
     
 }
 
-void test_get_program_callback_1(void)
+void test_rgb_program_1(void)
 {
     outputs_setPWM_Expect(RGB_OUTPUT_RED_1, 0);
     outputs_setPWM_Expect(RGB_OUTPUT_GREEN_1, 0);

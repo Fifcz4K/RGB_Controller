@@ -14,6 +14,11 @@ static void jsonParseRGB(cJSON* jsonInput, rgb_t* rgb, const char* objectName)
 
     if(cJSON_HasObjectItem(jsonRGB, "B"))
         rgb->color[Blue] = cJSON_GetObjectItem(jsonRGB, "B")->valueint;
+
+    if(cJSON_HasObjectItem(jsonRGB, "Prog"))
+    {
+        rgb->program = cJSON_GetObjectItem(jsonRGB, "Prog")->valueint;
+    }
 }
 
 jsonParse_t jsonParseSetConfiguration(const char* jsonInput)
@@ -35,11 +40,6 @@ jsonParse_t jsonParseSetConfiguration(const char* jsonInput)
     if(cJSON_HasObjectItem(jsonRoot, "LiSen"))
     {
         tempConfig.lightSensor = cJSON_GetObjectItem(jsonRoot, "LiSen")->valueint;
-    }
-
-    if(cJSON_HasObjectItem(jsonRoot, "Prog"))
-    {
-        tempConfig.program = cJSON_GetObjectItem(jsonRoot, "Prog")->valueint;
     }
 
     if(deviceConfigSet(&tempConfig) == false)
