@@ -47,3 +47,37 @@ jsonParse_t jsonParseSetConfiguration(const char* jsonInput)
 
     return jsonParseOk;
 }
+
+static void jsonParseRgbProgram(cJSON* jsonInput, rgb_program_configuration_t* config, const char* objectName)
+{
+    cJSON* jsonConfig = cJSON_GetObjectItem(jsonInput, objectName);
+
+    if(cJSON_HasObjectItem(jsonConfig, "Del"))
+        config->delay = cJSON_GetObjectItem(jsonConfig, "Del")->valueint;
+
+    if(cJSON_HasObjectItem(jsonConfig, "Max"))
+        config->maxValue = cJSON_GetObjectItem(jsonConfig, "Max")->valueint;
+}
+
+jsonParse_t jsonParseSetRgbProgramConfiguration(const char* jsonInput)
+{
+    rgb_program_configuration_t tempConfig[rgbNumberOfSections];
+    rgbProgramConfigGet(tempConfig);
+
+    cJSON* jsonRoot = cJSON_Parse(jsonInput);
+
+    if(cJSON_HasObjectItem(jsonRoot, "S1"))
+    {
+        jsonParseRgbProgram(jsonRoot, &tempConfig[rgbSectionOne], "S1");
+    }
+
+    if(cJSON_HasObjectItem(jsonRoot, "S2"))
+    {
+        jsonParseRgbProgram(jsonRoot, &tempConfig[rgbSectionTwo], "S2");
+    }
+
+    rgbProgramConfigSet(tempConfig);
+
+    return jsonParseOk;
+}
+

@@ -1,8 +1,22 @@
 #include "device_config.h"
 
-static const char *TAG = "DEVICE_CONFIG.C";
-
 static device_configuration_t config;
+static rgb_program_configuration_t rgbProgramConfig[rgbNumberOfSections];
+
+bool configChanged = false;
+
+bool isConfigChanged(void)
+{
+    bool retVal = false;
+
+    if(configChanged == true)
+    {
+        retVal = true;
+        configChanged = false;
+    }
+
+    return retVal;
+}
 
 void deviceConfigInit(void)
 {
@@ -92,10 +106,55 @@ bool deviceConfigSet(device_configuration_t *tempConfig)
 
     memcpy(&config, tempConfig, sizeof(device_configuration_t));
 
+    configChanged = true;
+
     return true;
 }
 
 void deviceConfigGet(device_configuration_t *tempConfig)
 {
     memcpy(tempConfig, &config, sizeof(device_configuration_t));
+}
+
+void rgbProgramsConfigInit(void)
+{
+    for(uint8_t i = 0; i < rgbNumberOfSections; i++)
+    {
+        rgbProgramConfig[i].delay = PROGRAM_CONFIG_DELAY_INIT_VALUE;
+        rgbProgramConfig[i].maxValue = PROGRAM_CONFIG_MAX_VALUE_INIT_VALUE;
+    }
+}
+
+uint16_t rgbProgramConfigGetDelay(rgb_section_t section)
+{
+    if(section >= rgbNumberOfSections)
+        return 0;
+
+    return rgbProgramConfig[section].delay;
+}
+
+color_value_t rgbProgramConfigGetMaxValue(rgb_section_t section)
+{
+    if(section >= rgbNumberOfSections)
+        return 0;
+
+    return rgbProgramConfig[section].maxValue;
+}
+
+void rgbProgramConfigSet(rgb_program_configuration_t *tempConfig)
+{
+    for(uint8_t i = 0; i < rgbNumberOfSections; i++)
+    {
+        memcpy(rgbProgramConfig + i, tempConfig + i, sizeof(rgb_program_configuration_t));
+    }
+
+    configChanged = true;
+}
+
+void rgbProgramConfigGet(rgb_program_configuration_t *tempConfig)
+{
+    for(uint8_t i = 0; i < rgbNumberOfSections; i++)
+    {
+        memcpy(tempConfig + i, rgbProgramConfig + i, sizeof(rgb_program_configuration_t));
+    }
 }

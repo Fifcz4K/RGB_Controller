@@ -109,17 +109,17 @@ void test_get_full_config(void)
 
     deviceConfigGet(&configToTest);
 
-    TEST_ASSERT_EQUAL(10, deviceConfigGetColor(rgbSectionOne, Red));
-    TEST_ASSERT_EQUAL(20, deviceConfigGetColor(rgbSectionOne, Green));
-    TEST_ASSERT_EQUAL(30, deviceConfigGetColor(rgbSectionOne, Blue));
-    TEST_ASSERT_EQUAL(100, deviceConfigGetColor(rgbSectionTwo, Red));
-    TEST_ASSERT_EQUAL(155, deviceConfigGetColor(rgbSectionTwo, Green));
-    TEST_ASSERT_EQUAL(255, deviceConfigGetColor(rgbSectionTwo, Blue));
+    TEST_ASSERT_EQUAL(10, configToTest.rgb[rgbSectionOne].color[Red]);
+    TEST_ASSERT_EQUAL(20, configToTest.rgb[rgbSectionOne].color[Green]);
+    TEST_ASSERT_EQUAL(30, configToTest.rgb[rgbSectionOne].color[Blue]);
+    TEST_ASSERT_EQUAL(100, configToTest.rgb[rgbSectionTwo].color[Red]);
+    TEST_ASSERT_EQUAL(155, configToTest.rgb[rgbSectionTwo].color[Green]);
+    TEST_ASSERT_EQUAL(255, configToTest.rgb[rgbSectionTwo].color[Blue]);
 
-    TEST_ASSERT_EQUAL(lightSensorOn, deviceConfigGetLightSensor());
+    TEST_ASSERT_EQUAL(lightSensorOn, configToTest.lightSensor);
 
-    TEST_ASSERT_EQUAL(rgbProgram3, deviceConfigGetProgram(rgbSectionOne));
-    TEST_ASSERT_EQUAL(rgbProgram1, deviceConfigGetProgram(rgbSectionTwo));
+    TEST_ASSERT_EQUAL(rgbProgram3, configToTest.rgb[rgbSectionOne].program);
+    TEST_ASSERT_EQUAL(rgbProgram1, configToTest.rgb[rgbSectionTwo].program);
 }
 
 void test_set_full_config(void)
@@ -159,5 +159,27 @@ void test_set_full_config(void)
     TEST_ASSERT_EQUAL(false, deviceConfigSet(&configToTest));
 }
 
+void test_get_set_rgb_program_config(void)
+{
+    rgb_program_configuration_t configToTest[rgbNumberOfSections];
 
+    configToTest[rgbSectionOne].maxValue = 240;
+    configToTest[rgbSectionOne].delay = 10;
+    configToTest[rgbSectionTwo].maxValue = 15;
+    configToTest[rgbSectionTwo].delay = 25;
+
+    rgbProgramConfigSet(configToTest);
+
+    for(uint8_t i = 0; i < rgbNumberOfSections; i++)
+    {
+        memset(configToTest + i, 0, sizeof(rgb_program_configuration_t));
+    }
+
+    rgbProgramConfigGet(configToTest);
+
+    TEST_ASSERT_EQUAL(240, configToTest[rgbSectionOne].maxValue);
+    TEST_ASSERT_EQUAL(10, configToTest[rgbSectionOne].delay);
+    TEST_ASSERT_EQUAL(15, configToTest[rgbSectionTwo].maxValue);
+    TEST_ASSERT_EQUAL(25, configToTest[rgbSectionTwo].delay);
+}
 

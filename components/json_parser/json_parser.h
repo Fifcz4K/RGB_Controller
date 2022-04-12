@@ -13,5 +13,6 @@ typedef enum
 }jsonParse_t;
 
 jsonParse_t jsonParseSetConfiguration(const char* jsonInput);
+jsonParse_t jsonParseSetRgbProgramConfiguration(const char* jsonInput);
 
 #endif

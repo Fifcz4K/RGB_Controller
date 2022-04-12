@@ -8,6 +8,7 @@
 
 #include "json_parser.h"
 #include "device_config.h"
+#include "device_task_handler.h"
 
 void startServerHttp(void);
 

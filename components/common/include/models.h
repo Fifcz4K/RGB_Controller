@@ -65,4 +65,11 @@ typedef struct
     light_sensor_t lightSensor;
 }device_configuration_t;
 
+typedef struct
+{
+    uint16_t delay;
+    color_value_t maxValue;
+}rgb_program_configuration_t;
+
+
 #endif

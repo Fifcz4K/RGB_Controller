@@ -14,6 +14,7 @@
 #define DEFAULT_PROGRAM_1 rgbProgram2
 #define DEFAULT_PROGRAM_2 rgbProgram3
 
+
 void setUp(void)
 {
     deviceConfigSetRGB(rgbSectionOne, DEFAULT_R1, DEFAULT_G1, DEFAULT_B1);
@@ -21,6 +22,7 @@ void setUp(void)
     deviceConfigSetLightSensor(DEFAULT_LIGHT_SENSOR);
     deviceConfigSetProgram(rgbSectionOne, DEFAULT_PROGRAM_1);
     deviceConfigSetProgram(rgbSectionTwo, DEFAULT_PROGRAM_2);
+    rgbProgramsConfigInit();
 }
 
 void tearDown(void)
@@ -231,5 +233,48 @@ void test_parse_set_config_fail_2(void)
     DEFAULT_PROGRAM_1,
     DEFAULT_PROGRAM_2);
 }
+
+void test_parse_set_rgb_program_config_pass_1(void)
+{
+    char* jsonToParse = "{  \
+        \"S1\":             \
+            {               \
+            \"Del\": 50,    \
+            \"Max\": 252    \
+            },              \
+        \"S2\":             \
+            {               \
+            \"Del\": 99,    \
+            \"Max\": 5      \
+            }               \
+        }";
+
+    jsonParseSetRgbProgramConfiguration(jsonToParse);
+
+    TEST_ASSERT_EQUAL(50, rgbProgramConfigGetDelay(rgbSectionOne));
+    TEST_ASSERT_EQUAL(252, rgbProgramConfigGetMaxValue(rgbSectionOne));
+    TEST_ASSERT_EQUAL(99, rgbProgramConfigGetDelay(rgbSectionTwo));
+    TEST_ASSERT_EQUAL(5, rgbProgramConfigGetMaxValue(rgbSectionTwo));
+}
+
+void test_parse_set_rgb_program_config_pass_2(void)
+{
+    char* jsonToParse = "{  \
+        \"S2\":             \
+            {               \
+            \"Del\": 1000,  \
+            \"Max\": 1000   \
+            }               \
+        }";
+
+    jsonParseSetRgbProgramConfiguration(jsonToParse);
+
+    TEST_ASSERT_EQUAL(PROGRAM_CONFIG_DELAY_INIT_VALUE, rgbProgramConfigGetDelay(rgbSectionOne));
+    TEST_ASSERT_EQUAL(PROGRAM_CONFIG_MAX_VALUE_INIT_VALUE, rgbProgramConfigGetMaxValue(rgbSectionOne));
+    TEST_ASSERT_EQUAL(1000, rgbProgramConfigGetDelay(rgbSectionTwo));
+    TEST_ASSERT_EQUAL(1000 % 256, rgbProgramConfigGetMaxValue(rgbSectionTwo));
+}
+
+
 
 

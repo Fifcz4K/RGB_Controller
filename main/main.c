@@ -4,19 +4,28 @@
 #include "models.h"
 #include "server_http.h"
 #include "outputs.h"
-#include "device_task_handler.h"
 
 static const char *TAG = "MAIN.C";
+extern bool configChanged;
 
 static void systemInit(void);
 
 void app_main(void)
 {
     deviceConfigInit();
+    rgbProgramsConfigInit();
     outputs_init();
-    deviceTasksInit();
     systemInit();
     startServerHttp();
+
+    while(1)
+    {
+        DELAY(10);
+        if(isConfigChanged() == true)
+        {
+            rgbTasksController();
+        }
+    }
 }
 
 static void systemInit(void)
