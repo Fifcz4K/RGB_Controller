@@ -81,3 +81,36 @@ jsonParse_t jsonParseSetRgbProgramConfiguration(const char* jsonInput)
     return jsonParseOk;
 }
 
+jsonParse_t jsonParseWifi(const char* jsonInput)
+{
+    wifi_t wifi;
+    memset(&wifi, 0, sizeof(wifi_t));
+
+    cJSON *jsonRoot = cJSON_Parse(jsonInput);
+
+    if(cJSON_HasObjectItem(jsonRoot, "ssid"))
+    {
+        strcpy(&wifi.ssid, cJSON_GetObjectItem(jsonRoot, "ssid")->valuestring);
+    }
+    else
+    {
+        return jsonParseErr;
+    }
+
+    if(cJSON_HasObjectItem(jsonRoot, "pass"))
+    {
+        strcpy(&wifi.password, cJSON_GetObjectItem(jsonRoot, "pass")->valuestring);
+    }
+    else
+    {
+        return jsonParseErr;
+    }
+
+    wifiSetCredentials(&wifi);
+    
+    return jsonParseOk;
+}
+
+
+
+

@@ -5,6 +5,7 @@
 #include "models.h"
 #include "common.h"
 #include "device_config.h"
+#include "f_wifi.h"
 
 typedef enum
 {
@@ -14,5 +15,6 @@ typedef enum
 
 jsonParse_t jsonParseSetConfiguration(const char* jsonInput);
 jsonParse_t jsonParseSetRgbProgramConfiguration(const char* jsonInput);
+jsonParse_t jsonParseWifi(const char* jsonInput);
 
 #endif

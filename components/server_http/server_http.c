@@ -84,6 +84,47 @@ static const httpd_uri_t setRgbProgramConfig = {
     .user_ctx  = NULL
 };
 
+static esp_err_t setWifi_post_handler(httpd_req_t *req)
+{
+    char buf[250];
+    int ret, remaining = req->content_len;
+
+    while (remaining > 0) 
+    {
+        /* Read the data for the request */
+        if ((ret = httpd_req_recv(req, buf, MIN(remaining, sizeof(buf)))) <= 0) 
+        {
+            if (ret == HTTPD_SOCK_ERR_TIMEOUT) 
+            {
+                /* Retry receiving if timeout occurred */
+                continue;
+            }
+            return ESP_FAIL;
+        }
+
+        remaining -= ret;
+    }
+
+    if(jsonParseWifi(buf) == jsonParseErr)
+    {
+        ESP_LOGI(TAG, "jsonParseWifi did not work properly\n");
+        httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
+    }
+    else
+    {
+        httpd_resp_send(req, "Wifi credentials received", HTTPD_RESP_USE_STRLEN);
+    }
+
+    return ESP_OK;
+}
+
+static const httpd_uri_t setWifi = {
+    .uri       = "/SetWifi",
+    .method    = HTTP_POST,
+    .handler   = setWifi_post_handler,
+    .user_ctx  = NULL
+};
+
 static esp_err_t getMeasurements_get_handler(httpd_req_t *req)
 {
     const char* resp_str = (const char*) jsonBuildMeasurements();
@@ -142,6 +183,7 @@ static httpd_handle_t start_webserver(void)
         httpd_register_uri_handler(server, &setRgbProgramConfig);
         httpd_register_uri_handler(server, &getMeasurements);
         httpd_register_uri_handler(server, &getConfiguration);
+        httpd_register_uri_handler(server, &setWifi);
         return server;
     }
 

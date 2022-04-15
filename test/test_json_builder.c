@@ -4,6 +4,7 @@
 #include "cJSON.h"
 #include "device_config.h"
 #include "json_parser.h"
+#include "f_wifi.h"
 #include "mock_measurements.h"
 
 void setUp(void)

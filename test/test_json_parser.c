@@ -3,6 +3,7 @@
 #include "json_parser.h"
 #include "cJSON.h"
 #include "device_config.h"
+#include "f_wifi.h"
 
 #define DEFAULT_R1 5
 #define DEFAULT_G1 10
@@ -275,6 +276,35 @@ void test_parse_set_rgb_program_config_pass_2(void)
     TEST_ASSERT_EQUAL(1000 % 256, rgbProgramConfigGetMaxValue(rgbSectionTwo));
 }
 
+void test_parse_set_wifi_pass(void)
+{
+    char* jsonToParse = "{          \
+        \"ssid\": \"MyWifi123\",    \
+        \"pass\": \"MyPass123\"     \
+        }";
 
+    TEST_ASSERT_EQUAL(jsonParseOk, jsonParseWifi(jsonToParse));
+
+    TEST_ASSERT_EQUAL_STRING("MyWifi123", wifiGetSsid());
+    TEST_ASSERT_EQUAL_STRING("MyPass123", wifiGetPassword());
+}
+
+void test_parse_set_wifi_fail_1(void)
+{
+    char* jsonToParse = "{          \
+        \"pass\": \"MyPass123\"     \
+        }";
+
+    TEST_ASSERT_EQUAL(jsonParseErr, jsonParseWifi(jsonToParse));
+}
+
+void test_parse_set_wifi_fail_2(void)
+{
+    char* jsonToParse = "{          \
+        \"ssid\": \"MySsid123\"     \
+        }";
+
+    TEST_ASSERT_EQUAL(jsonParseErr, jsonParseWifi(jsonToParse));
+}
 
 

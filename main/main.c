@@ -5,6 +5,7 @@
 #include "server_http.h"
 #include "outputs.h"
 #include "device_task_handler.h"
+#include "f_eeprom.h"
 
 static const char *TAG = "MAIN.C";
 extern bool configChanged;
@@ -13,6 +14,7 @@ static void systemInit(void);
 
 void app_main(void)
 {
+    eepromInit();
     deviceConfigInit();
     rgbProgramsConfigInit();
     outputs_init();
@@ -25,6 +27,11 @@ void app_main(void)
         if(isConfigChanged() == true)
         {
             rgbTasksController();
+        }
+
+        if(isWifiChanged() == true)
+        {
+            eepromSave(wifiGetCredentials(), sizeof(wifi_t), "wifi");
         }
     }
 }
