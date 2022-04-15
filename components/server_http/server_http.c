@@ -26,17 +26,97 @@ static esp_err_t setConfiguration_post_handler(httpd_req_t *req)
     if(jsonParseSetConfiguration(buf) == jsonParseErr)
     {
         ESP_LOGI(TAG, "jsonParseSetConfiguration did not work properly\n");
+        httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
+    }
+    else
+    {
+        httpd_resp_send(req, "Configration set OK", HTTPD_RESP_USE_STRLEN);
     }
 
-    // End response
-    httpd_resp_send_chunk(req, NULL, 0);
     return ESP_OK;
 }
 
-static const httpd_uri_t setDevice = {
+static const httpd_uri_t setDeviceConfig = {
     .uri       = "/SetConfiguration",
     .method    = HTTP_POST,
     .handler   = setConfiguration_post_handler,
+    .user_ctx  = NULL
+};
+
+static esp_err_t setRgbProgramConfig_post_handler(httpd_req_t *req)
+{
+    char buf[250];
+    int ret, remaining = req->content_len;
+
+    while (remaining > 0) 
+    {
+        /* Read the data for the request */
+        if ((ret = httpd_req_recv(req, buf, MIN(remaining, sizeof(buf)))) <= 0) 
+        {
+            if (ret == HTTPD_SOCK_ERR_TIMEOUT) 
+            {
+                /* Retry receiving if timeout occurred */
+                continue;
+            }
+            return ESP_FAIL;
+        }
+
+        remaining -= ret;
+    }
+
+    if(jsonParseSetRgbProgramConfiguration(buf) == jsonParseErr)
+    {
+        ESP_LOGI(TAG, "jsonParseSetRgbProgramConfiguration did not work properly\n");
+        httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
+    }
+    else
+    {
+        httpd_resp_send(req, "RGB Program Config set OK", HTTPD_RESP_USE_STRLEN);
+    }
+
+    return ESP_OK;
+}
+
+static const httpd_uri_t setRgbProgramConfig = {
+    .uri       = "/SetRgbProgramConfiguration",
+    .method    = HTTP_POST,
+    .handler   = setRgbProgramConfig_post_handler,
+    .user_ctx  = NULL
+};
+
+static esp_err_t getMeasurements_get_handler(httpd_req_t *req)
+{
+    const char* resp_str = (const char*) jsonBuildMeasurements();
+    httpd_resp_send(req, resp_str, HTTPD_RESP_USE_STRLEN);
+
+    if (httpd_req_get_hdr_value_len(req, "Host") == 0) 
+    {
+        ESP_LOGI(TAG, "Request headers lost");
+    }
+    return ESP_OK;
+}
+static const httpd_uri_t getMeasurements = {
+    .uri       = "/GetMeasurements",
+    .method    = HTTP_GET,
+    .handler   = getMeasurements_get_handler,
+    .user_ctx  = NULL
+};
+
+static esp_err_t getConfiguration_get_handler(httpd_req_t *req)
+{
+    const char* resp_str = (const char*) jsonBuildConfiguration();
+    httpd_resp_send(req, resp_str, HTTPD_RESP_USE_STRLEN);
+
+    if (httpd_req_get_hdr_value_len(req, "Host") == 0) 
+    {
+        ESP_LOGI(TAG, "Request headers lost");
+    }
+    return ESP_OK;
+}
+static const httpd_uri_t getConfiguration = {
+    .uri       = "/GetConfig",
+    .method    = HTTP_GET,
+    .handler   = getConfiguration_get_handler,
     .user_ctx  = NULL
 };
 
@@ -58,7 +138,10 @@ static httpd_handle_t start_webserver(void)
     {
         // Set URI handlers
         ESP_LOGI(TAG, "Registering URI handlers");
-        httpd_register_uri_handler(server, &setDevice);
+        httpd_register_uri_handler(server, &setDeviceConfig);
+        httpd_register_uri_handler(server, &setRgbProgramConfig);
+        httpd_register_uri_handler(server, &getMeasurements);
+        httpd_register_uri_handler(server, &getConfiguration);
         return server;
     }
 
@@ -99,14 +182,8 @@ void startServerHttp(void)
     /* Register event handlers to stop the server when Wi-Fi or Ethernet is disconnected,
      * and re-start it upon connection.
      */
-#ifdef CONFIG_EXAMPLE_CONNECT_WIFI
     ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &connect_handler, &server));
     ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, &disconnect_handler, &server));
-#endif // CONFIG_EXAMPLE_CONNECT_WIFI
-#ifdef CONFIG_EXAMPLE_CONNECT_ETHERNET
-    ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_ETH_GOT_IP, &connect_handler, &server));
-    ESP_ERROR_CHECK(esp_event_handler_register(ETH_EVENT, ETHERNET_EVENT_DISCONNECTED, &disconnect_handler, &server));
-#endif // CONFIG_EXAMPLE_CONNECT_ETHERNET
 
     /* Start the server for the first time */
     server = start_webserver();

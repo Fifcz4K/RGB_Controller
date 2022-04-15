@@ -7,7 +7,7 @@
 #include "device_config.h"
 #include "measurements.h"
 
-cJSON* jsonBuildConfiguration(void);
-cJSON* jsonBuildMeasurements(void);
+char* jsonBuildConfiguration(void);
+char* jsonBuildMeasurements(void);
 
 #endif

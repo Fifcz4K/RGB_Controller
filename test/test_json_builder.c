@@ -22,11 +22,11 @@ static void buildParseAndCompare(void)
 
     deviceConfigGet(&expectedDeviceConfig);
 
-    cJSON *jsonBuilded = jsonBuildConfiguration();
+    char *jsonBuilded = jsonBuildConfiguration();
 
     deviceConfigInit(); // reset device configuration
 
-    if(jsonParseSetConfiguration(cJSON_Print(jsonBuilded)) == jsonParseErr)
+    if(jsonParseSetConfiguration(jsonBuilded) == jsonParseErr)
         TEST_FAIL();
 
     deviceConfigGet(&parsedDeviceConfig);
@@ -74,10 +74,9 @@ void test_build_get_measurements_max_values(void)
     measurementTemperatureGet_ExpectAndReturn(450);
     measurementLightGet_ExpectAndReturn(100);
   
-    cJSON *jsonMeasurements = jsonBuildMeasurements();
-    char* jsonMeasurementsChars = cJSON_Print(jsonMeasurements);
+    char *jsonMeasurements = jsonBuildMeasurements();
 
-    TEST_ASSERT_EQUAL_STRING(jsonExpected, jsonMeasurementsChars);
+    TEST_ASSERT_EQUAL_STRING(jsonExpected, jsonMeasurements);
 }
 
 void test_build_get_measurements_min_values(void)
@@ -87,10 +86,9 @@ void test_build_get_measurements_min_values(void)
     measurementTemperatureGet_ExpectAndReturn(-100);
     measurementLightGet_ExpectAndReturn(0);
   
-    cJSON *jsonMeasurements = jsonBuildMeasurements();
-    char* jsonMeasurementsChars = cJSON_Print(jsonMeasurements);
+    char *jsonMeasurements = jsonBuildMeasurements();
 
-    TEST_ASSERT_EQUAL_STRING(jsonExpected, jsonMeasurementsChars);
+    TEST_ASSERT_EQUAL_STRING(jsonExpected, jsonMeasurements);
 }
 
 void test_build_get_measurements_zeros(void)
@@ -100,10 +98,9 @@ void test_build_get_measurements_zeros(void)
     measurementTemperatureGet_ExpectAndReturn(0);
     measurementLightGet_ExpectAndReturn(0);
   
-    cJSON *jsonMeasurements = jsonBuildMeasurements();
-    char* jsonMeasurementsChars = cJSON_Print(jsonMeasurements);
+    char *jsonMeasurements = jsonBuildMeasurements();
 
-    TEST_ASSERT_EQUAL_STRING(jsonExpected, jsonMeasurementsChars);
+    TEST_ASSERT_EQUAL_STRING(jsonExpected, jsonMeasurements);
 }
 
 void test_build_get_measurements_random_values_1(void)
@@ -113,8 +110,7 @@ void test_build_get_measurements_random_values_1(void)
     measurementTemperatureGet_ExpectAndReturn(192);
     measurementLightGet_ExpectAndReturn(50);
   
-    cJSON *jsonMeasurements = jsonBuildMeasurements();
-    char* jsonMeasurementsChars = cJSON_Print(jsonMeasurements);
+    char *jsonMeasurements = jsonBuildMeasurements();
 
-    TEST_ASSERT_EQUAL_STRING(jsonExpected, jsonMeasurementsChars);
+    TEST_ASSERT_EQUAL_STRING(jsonExpected, jsonMeasurements);
 }

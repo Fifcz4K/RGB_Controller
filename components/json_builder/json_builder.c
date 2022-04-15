@@ -14,7 +14,7 @@ static void jsonBuildRGB(cJSON *jsonConfig, const char *objectName, rgb_t *rgb)
     cJSON_AddItemToObject(jsonConfig, objectName, jsonRGB);
 }
 
-cJSON* jsonBuildConfiguration(void)
+char* jsonBuildConfiguration(void)
 {
     device_configuration_t tempConfig;
     deviceConfigGet(&tempConfig);
@@ -26,17 +26,17 @@ cJSON* jsonBuildConfiguration(void)
 
     cJSON_AddBoolToObject(jsonConfig, "LiSen", tempConfig.lightSensor);
 
-    return jsonConfig;
+    return cJSON_Print(jsonConfig);
 }
 
-cJSON* jsonBuildMeasurements(void)
+char* jsonBuildMeasurements(void)
 {
     cJSON *jsonMeasurements = cJSON_CreateObject();
 
     cJSON_AddNumberToObject(jsonMeasurements, "Temp", measurementTemperatureGet());
     cJSON_AddNumberToObject(jsonMeasurements, "Light", measurementLightGet());
 
-    return jsonMeasurements;
+    return cJSON_Print(jsonMeasurements);
 }
 
 
