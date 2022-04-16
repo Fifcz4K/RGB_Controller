@@ -5,7 +5,7 @@
 #include "models.h"
 #include "common.h"
 #include "device_config.h"
-#include "f_wifi.h"
+#include "wifi_credentials.h"
 
 typedef enum
 {

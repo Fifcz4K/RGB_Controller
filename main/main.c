@@ -6,11 +6,9 @@
 #include "outputs.h"
 #include "device_task_handler.h"
 #include "f_eeprom.h"
+#include "wifi_handler.h"
 
 static const char *TAG = "MAIN.C";
-extern bool configChanged;
-
-static void systemInit(void);
 
 void app_main(void)
 {
@@ -35,17 +33,4 @@ void app_main(void)
             eepromSave(wifiGetCredentials(), sizeof(wifi_t), "wifi");
         }
     }
-}
-
-static void systemInit(void)
-{
-    ESP_ERROR_CHECK(nvs_flash_init());
-    ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-
-    /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
-     * Read "Establishing Wi-Fi or Ethernet Connection" section in
-     * examples/protocols/README.md for more information about this function.
-     */
-    ESP_ERROR_CHECK(example_connect());
 }

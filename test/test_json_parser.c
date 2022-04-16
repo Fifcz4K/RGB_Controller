@@ -3,7 +3,7 @@
 #include "json_parser.h"
 #include "cJSON.h"
 #include "device_config.h"
-#include "f_wifi.h"
+#include "wifi_credentials.h"
 
 #define DEFAULT_R1 5
 #define DEFAULT_G1 10
