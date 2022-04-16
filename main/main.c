@@ -18,7 +18,8 @@ void app_main(void)
     deviceConfigInit();
     rgbProgramsConfigInit();
     outputs_init();
-    systemInit();
+    // systemInit();
+    wifiInit();
     startServerHttp();
 
     while(1)
