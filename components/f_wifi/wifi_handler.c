@@ -17,11 +17,13 @@ static wifi_workmode_t wifiMode;
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,
                                     int32_t event_id, void* event_data)
 {
-    if (event_id == WIFI_EVENT_AP_STACONNECTED) {
+    if (event_id == WIFI_EVENT_AP_STACONNECTED) 
+    {
         wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
         ESP_LOGI(TAG, "station "MACSTR" join, AID=%d",
                  MAC2STR(event->mac), event->aid);
-    } else if (event_id == WIFI_EVENT_AP_STADISCONNECTED) {
+    } else if (event_id == WIFI_EVENT_AP_STADISCONNECTED) 
+    {
         wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
         ESP_LOGI(TAG, "station "MACSTR" leave, AID=%d",
                  MAC2STR(event->mac), event->aid);
@@ -66,18 +68,26 @@ static void wifi_init_softap(void)
 static void event_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data)
 {
-    if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
+    if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) 
+    {
         esp_wifi_connect();
-    } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
-        if (wifiStationConnectRetry < WIFI_STATION_MAXIMUM_RETRY) {
+    } 
+    else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) 
+    {
+        if (wifiStationConnectRetry < WIFI_STATION_MAXIMUM_RETRY) 
+        {
             esp_wifi_connect();
             wifiStationConnectRetry++;
             ESP_LOGI(TAG, "retry to connect to the AP");
-        } else {
+        } 
+        else 
+        {
             xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
         }
         ESP_LOGI(TAG,"connect to the AP fail");
-    } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
+    } 
+    else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) 
+    {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
         ESP_LOGI(TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
         wifiStationConnectRetry = 0;
@@ -142,13 +152,18 @@ static void wifi_init_sta(void)
 
     /* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually
      * happened. */
-    if (bits & WIFI_CONNECTED_BIT) {
+    if (bits & WIFI_CONNECTED_BIT) 
+    {
         ESP_LOGI(TAG, "connected to ap SSID:%s",
                  wifiGetSsid());
-    } else if (bits & WIFI_FAIL_BIT) {
+    } 
+    else if (bits & WIFI_FAIL_BIT) 
+    {
         ESP_LOGI(TAG, "Failed to connect to SSID:%s",
                  wifiGetSsid());
-    } else {
+    } 
+    else 
+    {
         ESP_LOGE(TAG, "UNEXPECTED EVENT");
     }
 
