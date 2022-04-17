@@ -1,14 +1,7 @@
 #ifndef _MODELS_H_
 #define _MODELS_H_
 
-#include "stdint.h"
-
-#define FALSE 0
-#define TRUE 1
-
-typedef uint8_t color_value_t;
-typedef int16_t temperature_t;
-typedef uint8_t light_t;
+#include "common.h"
 
 typedef struct
 {

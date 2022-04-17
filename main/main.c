@@ -5,6 +5,7 @@
 #include "f_eeprom.h"
 #include "wifi_handler.h"
 #include "f_adc.h"
+#include "measurements.h"
 
 static const char *TAG = "MAIN.C";
 
@@ -17,7 +18,8 @@ void app_main(void)
     adcInit();
     wifiInit();
     startServerHttp();
-    measurementProcess(measureTemperature);
+    measurementProcess(measureTemperature, adcGetValue(adcTemperatureChannel));
+    measurementProcess(measureLight, adcGetValue(adcLightChannel));
 
     while(1)
     {

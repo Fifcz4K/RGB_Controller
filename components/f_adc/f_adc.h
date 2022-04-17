@@ -18,8 +18,6 @@ typedef enum
     adcLightChannel = ADC_CHANNEL_5
 }channel_adc_t;
 
-typedef uint32_t adc_value_t;
-
 void adcInit(void);
 adc_value_t adcGetValue(channel_adc_t channel);
 
