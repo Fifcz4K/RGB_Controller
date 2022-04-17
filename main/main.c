@@ -18,12 +18,12 @@ void app_main(void)
     adcInit();
     wifiInit();
     startServerHttp();
-    measurementProcess(measureTemperature, adcGetValue(adcTemperatureChannel));
     measurementProcess(measureLight, adcGetValue(adcLightChannel));
 
     while(1)
     {
-        DELAY(10);
+        measurementProcess(measureTemperature, adcGetValue(adcTemperatureChannel));
+        DELAY(100);
         if(isConfigChanged() == true)
         {
             rgbTasksController();

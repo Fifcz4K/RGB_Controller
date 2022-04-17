@@ -4,7 +4,8 @@
 #include "common.h"
 #include "models.h"
 
-#define MIN_TEMPERATURE_VALUE (-100) // -100 = -10*C
+#define MIN_TEMPERATURE_VALUE (-100)    // -100 = -10*C
+#define TEMPERATURE_OFFSET (-164)       // because of PCB issue
 
 void measurementProcess(measurement_command_t command, uint16_t adcValue);
 

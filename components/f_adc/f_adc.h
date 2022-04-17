@@ -6,8 +6,8 @@
 
 #include "common.h"
 
-#define ADC_DEFAULT_VREF    3300
-#define ADC_NO_OF_SAMPLES   8
+#define ADC_DEFAULT_VREF    5000
+#define ADC_NO_OF_SAMPLES   100
 #define ADC_WIDTH           ADC_WIDTH_BIT_12
 #define ADC_ATTEN           ADC_ATTEN_DB_11
 #define ADC_UNIT            ADC_UNIT_1

@@ -38,7 +38,7 @@ void measurementProcess(measurement_command_t command, uint16_t adcValue)
     switch(command)
     {
         case measureTemperature:
-            measurements.temperature = measurementCountTemperatureFromAdc(adcValue);
+            measurements.temperature = measurementCountTemperatureFromAdc(adcValue) + TEMPERATURE_OFFSET;
         break;
 
         case measureLight:
