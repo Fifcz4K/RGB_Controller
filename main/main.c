@@ -4,7 +4,6 @@
 #include "device_task_handler.h"
 #include "f_eeprom.h"
 #include "wifi_handler.h"
-#include "f_adc.h"
 #include "measurements.h"
 
 static const char *TAG = "MAIN.C";
@@ -16,17 +15,16 @@ void app_main(void)
     rgbProgramsConfigInit();
     outputs_init();
     adcInit();
+    taskHandlerMeasurements();
     wifiInit();
     startServerHttp();
-    measurementProcess(measureLight, adcGetValue(adcLightChannel));
 
     while(1)
     {
-        measurementProcess(measureTemperature, adcGetValue(adcTemperatureChannel));
-        DELAY(100);
+        DELAY(20);
         if(isConfigChanged() == true)
         {
-            rgbTasksController();
+            taskHandlerRGB();
         }
 
         if(isWifiChanged() == true)
