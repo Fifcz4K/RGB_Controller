@@ -6,8 +6,6 @@
 #include "wifi_handler.h"
 #include "measurements.h"
 
-static const char *TAG = "MAIN.C";
-
 static void wifiInit(void);
 
 void app_main(void)
@@ -29,7 +27,7 @@ void app_main(void)
 
         if(isWifiChanged() == true)
         {
-            eepromSave(wifiGetCredentials(), sizeof(wifi_t), "wifi");
+            eepromSave((uint8_t*)wifiGetCredentials(), sizeof(wifi_t), "wifi");
         }
     }
 }
@@ -37,7 +35,7 @@ void app_main(void)
 static void wifiInit(void)
 {
     wifi_workmode_t wifiMode;
-    if(eepromRead(wifiGetCredentials(), sizeof(wifi_t), "wifi") == true)
+    if(eepromRead((uint8_t*)wifiGetCredentials(), sizeof(wifi_t), "wifi") == true)
     {
         wifiMode = WifiStation;
     }

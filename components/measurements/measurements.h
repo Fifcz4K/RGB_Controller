@@ -8,8 +8,8 @@
 
 typedef struct
 {
-    temperature_t temperature; // operating on temperature multiplied by 10 to avoid float data type
-    light_t light; // 0 - 100%
+    temperature_value_t temperature; // operating on temperature multiplied by 10 to avoid float data type
+    light_value_t light; // 0 - 100%
 }measurements_t;
 
 typedef enum
@@ -18,9 +18,9 @@ typedef enum
     measureLight
 }measurement_command_t;
 
-void measurementProcess(measurement_command_t command, uint16_t adcValue);
+void measurementProcess(measurement_command_t command, adc_value_t adcValue);
 
-light_t measurementLightGet(void);
-temperature_t measurementTemperatureGet(void);
+light_value_t measurementLightGet(void);
+temperature_value_t measurementTemperatureGet(void);
 
 #endif

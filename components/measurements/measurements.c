@@ -4,13 +4,13 @@
 
 static measurements_t measurements;
 
-static light_t measurementCountLightFromAdc(adc_value_t adcValue)
+static light_value_t measurementCountLightFromAdc(adc_value_t adcValue)
 {
     //todo
     return 0;
 }
 
-static temperature_t measurementCountTemperatureFromAdc(adc_value_t adcValue)
+static temperature_value_t measurementCountTemperatureFromAdc(adc_value_t adcValue)
 {
     uint16_t adcDiff = 0xFFFF;
     uint16_t absValue = 0;
@@ -33,7 +33,7 @@ static temperature_t measurementCountTemperatureFromAdc(adc_value_t adcValue)
     return remember_i + MIN_TEMPERATURE_VALUE;
 }
 
-void measurementProcess(measurement_command_t command, uint16_t adcValue)
+void measurementProcess(measurement_command_t command, adc_value_t adcValue)
 {
     switch(command)
     {
@@ -50,12 +50,12 @@ void measurementProcess(measurement_command_t command, uint16_t adcValue)
     }
 }
 
-light_t measurementLightGet(void)
+light_value_t measurementLightGet(void)
 {
     return measurements.light;
 }
 
-temperature_t measurementTemperatureGet(void)
+temperature_value_t measurementTemperatureGet(void)
 {
     return measurements.temperature;
 }
