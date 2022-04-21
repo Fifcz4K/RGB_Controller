@@ -1,134 +1,88 @@
 #include "server_http.h"
 
-static const char *TAG = "SERVER_HTTP.C";
+static const char *TAG = "SERVER HTTP:";
+
+static esp_err_t httpStoreReceivedData(httpd_req_t *req, char *buf)
+{
+    int ret, remaining = req->content_len;
+
+    while (remaining > 0) 
+    {
+        /* Read the data for the request */
+        if ((ret = httpd_req_recv(req, buf, MIN(remaining, sizeof(buf)))) <= 0) 
+        {
+            if (ret == HTTPD_SOCK_ERR_TIMEOUT) 
+            {
+                /* Retry receiving if timeout occurred */
+                continue;
+            }
+            return ESP_FAIL;
+        }
+
+        remaining -= ret;
+    }
+
+    return ESP_OK;
+}
 
 static esp_err_t setConfiguration_post_handler(httpd_req_t *req)
 {
     char buf[250];
-    int ret, remaining = req->content_len;
 
-    while (remaining > 0) 
-    {
-        /* Read the data for the request */
-        if ((ret = httpd_req_recv(req, buf, MIN(remaining, sizeof(buf)))) <= 0) 
-        {
-            if (ret == HTTPD_SOCK_ERR_TIMEOUT) 
-            {
-                /* Retry receiving if timeout occurred */
-                continue;
-            }
-            return ESP_FAIL;
-        }
+    esp_err_t result = httpStoreReceivedData(req, buf);
 
-        remaining -= ret;
-    }
+    // if(jsonParseSetConfiguration(buf) == jsonParseErr)
+    // {
+    //     httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
+    // }
+    // else
+    // {
+    //     httpd_resp_send(req, "Configration set OK", HTTPD_RESP_USE_STRLEN);
+    // }
 
-    if(jsonParseSetConfiguration(buf) == jsonParseErr)
-    {
-        ESP_LOGI(TAG, "jsonParseSetConfiguration did not work properly\n");
-        httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
-    }
-    else
-    {
-        httpd_resp_send(req, "Configration set OK", HTTPD_RESP_USE_STRLEN);
-    }
-
-    return ESP_OK;
+    return result;
 }
-
-static const httpd_uri_t setDeviceConfig = {
-    .uri       = "/SetConfiguration",
-    .method    = HTTP_POST,
-    .handler   = setConfiguration_post_handler,
-    .user_ctx  = NULL
-};
 
 static esp_err_t setRgbProgramConfig_post_handler(httpd_req_t *req)
 {
     char buf[250];
-    int ret, remaining = req->content_len;
 
-    while (remaining > 0) 
-    {
-        /* Read the data for the request */
-        if ((ret = httpd_req_recv(req, buf, MIN(remaining, sizeof(buf)))) <= 0) 
-        {
-            if (ret == HTTPD_SOCK_ERR_TIMEOUT) 
-            {
-                /* Retry receiving if timeout occurred */
-                continue;
-            }
-            return ESP_FAIL;
-        }
+    esp_err_t result = httpStoreReceivedData(req, buf);
 
-        remaining -= ret;
-    }
+    // if(jsonParseSetRgbProgramConfiguration(buf) == jsonParseErr)
+    // {
+    //     httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
+    // }
+    // else
+    // {
+    //     httpd_resp_send(req, "RGB Program Config set OK", HTTPD_RESP_USE_STRLEN);
+    // }
 
-    if(jsonParseSetRgbProgramConfiguration(buf) == jsonParseErr)
-    {
-        ESP_LOGI(TAG, "jsonParseSetRgbProgramConfiguration did not work properly\n");
-        httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
-    }
-    else
-    {
-        httpd_resp_send(req, "RGB Program Config set OK", HTTPD_RESP_USE_STRLEN);
-    }
-
-    return ESP_OK;
+    return result;
 }
-
-static const httpd_uri_t setRgbProgramConfig = {
-    .uri       = "/SetRgbProgramConfiguration",
-    .method    = HTTP_POST,
-    .handler   = setRgbProgramConfig_post_handler,
-    .user_ctx  = NULL
-};
 
 static esp_err_t setWifi_post_handler(httpd_req_t *req)
 {
     char buf[250];
-    int ret, remaining = req->content_len;
 
-    while (remaining > 0) 
-    {
-        /* Read the data for the request */
-        if ((ret = httpd_req_recv(req, buf, MIN(remaining, sizeof(buf)))) <= 0) 
-        {
-            if (ret == HTTPD_SOCK_ERR_TIMEOUT) 
-            {
-                /* Retry receiving if timeout occurred */
-                continue;
-            }
-            return ESP_FAIL;
-        }
+    esp_err_t result = httpStoreReceivedData(req, buf);
 
-        remaining -= ret;
-    }
+    // if(jsonParseWifi(buf) == jsonParseErr)
+    // {
+    //     httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
+    // }
+    // else
+    // {
+    //     httpd_resp_send(req, "Wifi credentials received", HTTPD_RESP_USE_STRLEN);
+    // }
 
-    if(jsonParseWifi(buf) == jsonParseErr)
-    {
-        ESP_LOGI(TAG, "jsonParseWifi did not work properly\n");
-        httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
-    }
-    else
-    {
-        httpd_resp_send(req, "Wifi credentials received", HTTPD_RESP_USE_STRLEN);
-    }
-
-    return ESP_OK;
+    return result;
 }
-
-static const httpd_uri_t setWifi = {
-    .uri       = "/SetWifi",
-    .method    = HTTP_POST,
-    .handler   = setWifi_post_handler,
-    .user_ctx  = NULL
-};
 
 static esp_err_t getMeasurements_get_handler(httpd_req_t *req)
 {
-    const char* resp_str = (const char*) jsonBuildMeasurements();
-    httpd_resp_send(req, resp_str, HTTPD_RESP_USE_STRLEN);
+    // const char* resp_str = (const char*) jsonBuildMeasurements();
+    // httpd_resp_send(req, resp_str, HTTPD_RESP_USE_STRLEN);
 
     if (httpd_req_get_hdr_value_len(req, "Host") == 0) 
     {
@@ -136,17 +90,10 @@ static esp_err_t getMeasurements_get_handler(httpd_req_t *req)
     }
     return ESP_OK;
 }
-static const httpd_uri_t getMeasurements = {
-    .uri       = "/GetMeasurements",
-    .method    = HTTP_GET,
-    .handler   = getMeasurements_get_handler,
-    .user_ctx  = NULL
-};
-
 static esp_err_t getConfiguration_get_handler(httpd_req_t *req)
 {
-    const char* resp_str = (const char*) jsonBuildConfiguration();
-    httpd_resp_send(req, resp_str, HTTPD_RESP_USE_STRLEN);
+    // const char* resp_str = (const char*) jsonBuildConfiguration();
+    // httpd_resp_send(req, resp_str, HTTPD_RESP_USE_STRLEN);
 
     if (httpd_req_get_hdr_value_len(req, "Host") == 0) 
     {
@@ -154,18 +101,47 @@ static esp_err_t getConfiguration_get_handler(httpd_req_t *req)
     }
     return ESP_OK;
 }
-static const httpd_uri_t getConfiguration = {
-    .uri       = "/GetConfig",
-    .method    = HTTP_GET,
-    .handler   = getConfiguration_get_handler,
-    .user_ctx  = NULL
-};
-
 esp_err_t http_404_error_handler(httpd_req_t *req, httpd_err_code_t err)
 {
     httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Some 404 error message");
     return ESP_FAIL;
 }
+
+static const httpd_uri_t httpRequests[] = 
+{
+    {
+        .uri       = "/SetConfiguration",
+        .method    = HTTP_POST,
+        .handler   = setConfiguration_post_handler,
+        .user_ctx  = NULL
+    },
+    {
+        .uri       = "/SetRgbProgramConfiguration",
+        .method    = HTTP_POST,
+        .handler   = setRgbProgramConfig_post_handler,
+        .user_ctx  = NULL
+    },
+    {
+        .uri       = "/SetWifi",
+        .method    = HTTP_POST,
+        .handler   = setWifi_post_handler,
+        .user_ctx  = NULL
+    },
+    {
+        .uri       = "/GetMeasurements",
+        .method    = HTTP_GET,
+        .handler   = getMeasurements_get_handler,
+        .user_ctx  = NULL
+    },
+    {
+        .uri       = "/GetConfig",
+        .method    = HTTP_GET,
+        .handler   = getConfiguration_get_handler,
+        .user_ctx  = NULL
+    },
+};
+
+static const uint8_t httpRequestsAmount = (sizeof(httpRequests)) / (sizeof(httpRequests[0]));
 
 static httpd_handle_t start_webserver(void)
 {
@@ -179,11 +155,11 @@ static httpd_handle_t start_webserver(void)
     {
         // Set URI handlers
         ESP_LOGI(TAG, "Registering URI handlers");
-        httpd_register_uri_handler(server, &setDeviceConfig);
-        httpd_register_uri_handler(server, &setRgbProgramConfig);
-        httpd_register_uri_handler(server, &getMeasurements);
-        httpd_register_uri_handler(server, &getConfiguration);
-        httpd_register_uri_handler(server, &setWifi);
+        for(uint8_t i = 0; i < httpRequestsAmount; i++)
+        {
+            httpd_register_uri_handler(server, &httpRequests[i]);
+        }
+
         return server;
     }
 

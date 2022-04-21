@@ -12,8 +12,6 @@ static EventGroupHandle_t s_wifi_event_group;
 
 static int wifiStationConnectRetry = 0;
 
-static wifi_workmode_t wifiMode;
-
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,
                                     int32_t event_id, void* event_data)
 {
@@ -173,17 +171,8 @@ static void wifi_init_sta(void)
     vEventGroupDelete(s_wifi_event_group);
 }
 
-void wifiInit(void)
+void wifiStart(wifi_workmode_t wifiMode)
 {
-    if(eepromRead(wifiGetCredentials(), sizeof(wifi_t), "wifi") == true)
-    {
-        wifiMode = WifiStation;
-    }
-    else
-    {
-        wifiMode = WifiAccessPoint;
-    }
-
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());

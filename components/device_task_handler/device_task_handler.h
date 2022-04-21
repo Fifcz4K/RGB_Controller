@@ -2,11 +2,8 @@
 #define _DEVICE_TASK_HANDLER_H_
 
 #include <esp_event.h>
-#include <esp_log.h>
 
 #include "common.h"
-#include "models.h"
-#include "rgb_programs.h"
 #include "f_adc.h"
 #include "measurements.h"
 

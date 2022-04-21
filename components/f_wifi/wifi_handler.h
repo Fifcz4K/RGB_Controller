@@ -4,9 +4,9 @@
 #include "esp_wifi.h"
 #include "nvs_flash.h"
 #include "freertos/event_groups.h"
+#include <esp_log.h>
 
 #include "wifi_credentials.h"
-#include "f_eeprom.h"
 
 #define WIFI_ACCESS_POINT_SSID          "RGB_CONTROLLER_AP"
 #define WIFI_ACCESS_POINT_PASSWORD      "RGB-ACCESS-132"
@@ -15,6 +15,6 @@
 
 #define WIFI_STATION_MAXIMUM_RETRY  5
 
-void wifiInit(void);
+void wifiStart(wifi_workmode_t wifiMode);
 
 #endif
