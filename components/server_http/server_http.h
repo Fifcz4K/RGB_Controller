@@ -5,6 +5,7 @@
 #include <sys/param.h>
 #include <esp_event.h>
 #include <esp_log.h>
+#include "common.h"
 
 void startServerHttp(void);
 

@@ -33,5 +33,34 @@ void taskHandlerMeasurements(void)
     xTaskCreate(measureTask, "LightMeasureTask", 4096, &lightMeasureTaskParam, 4, NULL);
 }
 
+static const uint8_t rgbOutput[rgbNumberOfSections][NumberOfColors] =
+{
+    {RGB_OUTPUT_RED_1, RGB_OUTPUT_GREEN_1, RGB_OUTPUT_BLUE_1},
+    {RGB_OUTPUT_RED_2, RGB_OUTPUT_GREEN_2, RGB_OUTPUT_BLUE_2}
+};
+
+static void rgbTask(void *param)
+{
+    color_value_t colorValue = 0;
+
+    while(1)
+    {
+        for(uint8_t i = 0; i < rgbNumberOfSections; i++)
+        {
+            for(uint8_t j = 0; j < NumberOfColors; i++)
+            {
+                colorValue = rgbGetColorValue(i, j);
+                outputs_setPWM(rgbOutput[i][j], colorValue);
+            }
+        }
+
+        DELAY(1);
+    }
+}
+
+void taskHandlerRGB(void)
+{
+    xTaskCreate(rgbTask, "rgbTask", 4096, NULL, 5, NULL);
+}
 
 

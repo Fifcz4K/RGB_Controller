@@ -14,16 +14,13 @@ void app_main(void)
     outputs_init();
     adcInit();
     taskHandlerMeasurements();
+    taskHandlerRGB();
     wifiInit();
     startServerHttp();
 
     while(1)
     {
-        DELAY(20);
-        // if(isConfigChanged() == true)
-        // {
-        //     taskHandlerRGB();
-        // }
+        DELAY(10);
 
         if(isWifiChanged() == true)
         {
