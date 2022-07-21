@@ -13,10 +13,10 @@ void app_main(void)
     eepromInit();
     outputs_init();
     adcInit();
-    taskHandlerMeasurements();
-    taskHandlerRGB();
     wifiInit();
     startServerHttp();
+    taskHandlerMeasurements();
+    taskHandlerRGB();
 
     while(1)
     {

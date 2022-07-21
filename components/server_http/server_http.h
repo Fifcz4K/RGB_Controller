@@ -6,6 +6,7 @@
 #include <esp_event.h>
 #include <esp_log.h>
 #include "common.h"
+#include "json_parser.h"
 
 void startServerHttp(void);
 

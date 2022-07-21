@@ -2,6 +2,8 @@
 
 static const char *TAG = "SERVER HTTP:";
 
+#define RECEIVE_BUFFER_SIZE 1000
+
 static esp_err_t httpStoreReceivedData(httpd_req_t *req, char *buf)
 {
     int ret, remaining = req->content_len;
@@ -9,7 +11,7 @@ static esp_err_t httpStoreReceivedData(httpd_req_t *req, char *buf)
     while (remaining > 0) 
     {
         /* Read the data for the request */
-        if ((ret = httpd_req_recv(req, buf, MIN(remaining, sizeof(buf)))) <= 0) 
+        if ((ret = httpd_req_recv(req, buf, MIN(remaining, RECEIVE_BUFFER_SIZE))) <= 0) 
         {
             if (ret == HTTPD_SOCK_ERR_TIMEOUT) 
             {
@@ -27,54 +29,34 @@ static esp_err_t httpStoreReceivedData(httpd_req_t *req, char *buf)
 
 static esp_err_t setConfiguration_post_handler(httpd_req_t *req)
 {
-    char buf[250];
-
+    char buf[RECEIVE_BUFFER_SIZE];
     esp_err_t result = httpStoreReceivedData(req, buf);
 
-    // if(jsonParseSetConfiguration(buf) == jsonParseErr)
-    // {
-    //     httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
-    // }
-    // else
-    // {
-    //     httpd_resp_send(req, "Configration set OK", HTTPD_RESP_USE_STRLEN);
-    // }
-
-    return result;
-}
-
-static esp_err_t setRgbProgramConfig_post_handler(httpd_req_t *req)
-{
-    char buf[250];
-
-    esp_err_t result = httpStoreReceivedData(req, buf);
-
-    // if(jsonParseSetRgbProgramConfiguration(buf) == jsonParseErr)
-    // {
-    //     httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
-    // }
-    // else
-    // {
-    //     httpd_resp_send(req, "RGB Program Config set OK", HTTPD_RESP_USE_STRLEN);
-    // }
+    if(jsonParseRgbConfig(buf) == jsonParseErr)
+    {
+        httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
+    }
+    else
+    {
+        httpd_resp_send(req, "Configration set OK", HTTPD_RESP_USE_STRLEN);
+    }
 
     return result;
 }
 
 static esp_err_t setWifi_post_handler(httpd_req_t *req)
 {
-    char buf[250];
-
+    char buf[RECEIVE_BUFFER_SIZE];
     esp_err_t result = httpStoreReceivedData(req, buf);
 
-    // if(jsonParseWifi(buf) == jsonParseErr)
-    // {
-    //     httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
-    // }
-    // else
-    // {
-    //     httpd_resp_send(req, "Wifi credentials received", HTTPD_RESP_USE_STRLEN);
-    // }
+    if(jsonParseWifi(buf) == jsonParseErr)
+    {
+        httpd_resp_send(req, "ERROR", HTTPD_RESP_USE_STRLEN);
+    }
+    else
+    {
+        httpd_resp_send(req, "Wifi credentials received", HTTPD_RESP_USE_STRLEN);
+    }
 
     return result;
 }
@@ -110,15 +92,9 @@ esp_err_t http_404_error_handler(httpd_req_t *req, httpd_err_code_t err)
 static const httpd_uri_t httpRequests[] = 
 {
     {
-        .uri       = "/SetConfiguration",
+        .uri       = "/SetConfig",
         .method    = HTTP_POST,
         .handler   = setConfiguration_post_handler,
-        .user_ctx  = NULL
-    },
-    {
-        .uri       = "/SetRgbProgramConfiguration",
-        .method    = HTTP_POST,
-        .handler   = setRgbProgramConfig_post_handler,
         .user_ctx  = NULL
     },
     {

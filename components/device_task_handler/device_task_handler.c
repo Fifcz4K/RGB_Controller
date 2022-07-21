@@ -47,20 +47,21 @@ static void rgbTask(void *param)
     {
         for(uint8_t i = 0; i < rgbNumberOfSections; i++)
         {
-            for(uint8_t j = 0; j < NumberOfColors; i++)
+            for(uint8_t j = 0; j < NumberOfColors; j++)
             {
                 colorValue = rgbGetColorValue(i, j);
                 outputs_setPWM(rgbOutput[i][j], colorValue);
             }
         }
 
-        DELAY(1);
+        DELAY(10);
     }
 }
 
 void taskHandlerRGB(void)
 {
-    xTaskCreate(rgbTask, "rgbTask", 4096, NULL, 5, NULL);
+    rgbInit();
+    xTaskCreate(rgbTask, "rgbTask", 2048, NULL, 6, NULL);
 }
 
 

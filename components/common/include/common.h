@@ -5,6 +5,7 @@
 #include "stdbool.h"
 #include "string.h"
 #include "stdlib.h"
+#include "stdio.h"
 
 #define DELAY(delay) vTaskDelay(delay / portTICK_RATE_MS)
 

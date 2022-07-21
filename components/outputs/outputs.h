@@ -6,9 +6,9 @@
 #define GPIO_R1  5
 #define GPIO_G1  18
 #define GPIO_B1  19
-#define GPIO_R2  27
+#define GPIO_R2  25
 #define GPIO_G2  26
-#define GPIO_B2  25
+#define GPIO_B2  27
 
 #define LEDC_LS_TIMER          LEDC_TIMER_1
 #define LEDC_LS_MODE           LEDC_LOW_SPEED_MODE

@@ -35,6 +35,8 @@ typedef struct
 }rgb_configuration_t;
 
 void rgbInit(void);
+void rgbGetConfig(rgb_configuration_t *config);
+void rgbSetConfig(rgb_configuration_t *config);
 color_value_t rgbGetColorValue(rgb_section_t section, color_t color);
 
 #endif
