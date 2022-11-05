@@ -2,7 +2,7 @@
 
 static wifi_t wifiCredentials = {0};
 
-bool wifiChanged = false;
+static bool wifiChanged = false;
 
 bool isWifiChanged(void)
 {

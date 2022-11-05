@@ -9,7 +9,7 @@
 #include "outputs.h"
 #include "rgb_configuration.h"
 
-#define TASK_TEMPERATURE_MEASUREMENT_DELAY 5000
+#define TASK_TEMPERATURE_MEASUREMENT_DELAY 30000
 #define TASK_LIGHT_MEASUREMENT_DELAY 100
 
 typedef struct
